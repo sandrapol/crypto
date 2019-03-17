@@ -84,7 +84,12 @@ namespace Crypto
                 }
                 else
                 {
+                    string cipherText = tbCipherText.Text;
+                    int key = int.Parse(tbKey.Text);
 
+                    string plainText = rf.Decrypt(cipherText, key);
+
+                    tbSummary.Text += plainText;
                 }
             }
             else if (rbA2.IsChecked == true)
