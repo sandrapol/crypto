@@ -8,61 +8,90 @@ namespace Crypto
 {
     class RailFence
     {
-        private string plainText;
-        private string cipherText;
-        private int key;
-        private char[,] codeTable;
-
         public string Encrypt(string plainText, int key)
         {
-            List<char>[] list = new List<char>[key];
+            if (key == 1)
+                return plainText;
 
-            for (int i = 0; i < list.Length; i++)
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < key; i++)
             {
-                list[i] = new List<char>();
+                list.Add("");
             }
 
-            plainText = plainText.Replace(" ", "");
+            int number = 0;
+            int increment = 1;
 
-            int iterator = -1;
-            int helper = 1;
-
-            for (int i = 0; i < plainText.Length; i++)
+            foreach (char c in plainText)
             {
-                iterator += helper;
-
-                list[iterator].Add(plainText[i]);
-
-                if (iterator == key-1)
+                if (number + increment == key)
                 {
-                    helper = -1;
+                    increment = -1;
                 }
-                else if (iterator == 0)
+                else if (number + increment == -1)
                 {
-                    helper = 1;
+                    increment = 1;
                 }
+
+                list[number] += c;
+                number += increment;
             }
 
             string cipherText = "";
 
-            for (int i = 0; i < list.Length; i++)
+            foreach (string s in list)
             {
-
-                while (list[i].Count != 0)
-                {
-                    cipherText += list[i].First();
-                    list[i].RemoveAt(0);
-                }
+                cipherText += s;
             }
 
             return cipherText;
         }
 
-        private string Decrypt()
+        public string Decrypt(string cipherText, int key)
         {
-            string plainText = "aa";
+            if (key == 1)
+                return cipherText;
 
-            return plainText;
+            List<List<int>> list = new List<List<int>>();
+
+            for (int i = 0; i < key; i++)
+            {
+                list.Add(new List<int>());
+            }
+
+            int cipherLength = cipherText.Length;
+            int number = 0;
+            int increment = 1;
+
+            for (int i = 0; i < cipherLength; i++)
+            {
+                if (number + increment == key)
+                {
+                    increment = -1;
+                }
+                else if (number + increment == -1)
+                {
+                    increment = 1;
+                }
+
+                list[number].Add(i);
+                number += increment;
+            }
+
+            int counter = 0;
+            char[] plainText = new char[cipherLength];
+
+            for (int i = 0; i < key; i++)
+            {
+                for (int j = 0; j < list[i].Count; j++)
+                {
+                    plainText[list[i][j]] = cipherText[counter];
+                    counter++;
+                }
+            }
+
+            return new string(plainText);
         }
     }
 }
