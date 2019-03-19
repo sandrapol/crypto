@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Crypto
 {
@@ -33,10 +34,13 @@ namespace Crypto
             return indexes;
         }
 
-        public static string Encipher(string input, string key, char padChar)
+        public  string Encipher( string input, string key, char padChar)
         {
+            //tu jest te uzupełnianie ostatniego wiersza jakimś podanym znakiem "padChar"
+            input = Regex.Replace(input, @"\s", "");
             input = (input.Length % key.Length == 0) ? input : input.PadRight(input.Length - (input.Length
                 % key.Length) + key.Length, padChar);
+            
             StringBuilder output = new StringBuilder();
             int totalChars = input.Length;
             int totalColumns = key.Length;
@@ -81,7 +85,7 @@ namespace Crypto
             return output.ToString();
         }
 
-        public static string Decipher(string input, string key)
+        public  string Decipher(string input, string key)
         {
             StringBuilder output = new StringBuilder();
             int totalChars = input.Length;

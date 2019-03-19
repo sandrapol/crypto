@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
 
 namespace Crypto
 {
@@ -24,6 +25,8 @@ namespace Crypto
         {
             InitializeComponent();
         }
+
+        ColumnTransposition ct = new ColumnTransposition();
 
         private void Clear1(object sender, RoutedEventArgs e)
         {
@@ -72,6 +75,7 @@ namespace Crypto
             if (rbA1.IsChecked == true)
             {
                 RailFence rf = new RailFence();
+               
 
                 if (rbM1.IsChecked == true)
                 {
@@ -94,11 +98,33 @@ namespace Crypto
             }
             else if (rbA2.IsChecked == true)
             {
+                
 
             }
             else if (rbA3.IsChecked == true)
             {
+                if (rbM1.IsChecked == true)
+                { 
+                string plainText = tbPlainText.Text;
+                string key = tbKey.Text;
+                char padChar = ' ';
 
+                string cipherText = ct.Encipher(plainText, key, padChar);
+                cipherText = Regex.Replace(cipherText, @"\s", "");
+
+                tbSummary.Text += cipherText;
+                }
+
+                else
+                {
+                    string cipherText = tbCipherText.Text;
+                    string key = tbKey.Text;
+
+                    string plainText = ct.Decipher(cipherText, key);
+
+                    plainText = Regex.Replace(plainText, @"\s", "");
+                    tbSummary.Text += plainText;
+                }
             }
         }
     }
