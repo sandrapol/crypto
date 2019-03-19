@@ -76,7 +76,6 @@ namespace Crypto
             {
                 RailFence rf = new RailFence();
                
-
                 if (rbM1.IsChecked == true)
                 {
                     string plainText = tbPlainText.Text;

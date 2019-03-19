@@ -16,7 +16,7 @@ namespace Crypto
 
         public Cipher(string initial, string key) 
         {
-            this.plainText = initial.ToCharArray();
+            this.plainText = initial.Replace(":", "").Replace(".", "").Replace(",", "").Replace(" ","").ToCharArray();
             this.result = "";
             try
             {
