@@ -98,7 +98,21 @@ namespace Crypto
             }
             else if (rbA2.IsChecked == true)
             {
-                
+                try
+                {
+                    Cipher cipher = new Cipher(tbPlainText.Text, tbKey.Text);
+                    if (rbM1.IsChecked == true)
+                    {
+                        cipher.code();
+                    }
+                    else
+                        cipher.decode();
+                    tbSummary.Text += cipher.getResult();
+                }
+                catch (ArgumentException ex)
+                {
+                    tbSummary.Text += ex.Message;
+                }
 
             }
             else if (rbA3.IsChecked == true)
