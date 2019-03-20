@@ -132,9 +132,9 @@ namespace Crypto
                 {
                     string cipherText = tbCipherText.Text;
                     string key = tbKey.Text;
+                    char padChar = ' ';
 
-                    string plainText = ct.Decipher(cipherText, key);
-
+                    string plainText = ct.Decipher(cipherText, key, padChar);
                     plainText = Regex.Replace(plainText, @"\s", "");
                     tbSummary.Text += plainText;
                 }
