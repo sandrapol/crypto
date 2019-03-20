@@ -114,25 +114,40 @@ namespace Crypto
 
             if (rbA1.IsChecked == true)
             {
-                RailFence rf = new RailFence();
-               
-                if (rbM1.IsChecked == true)
+                try
                 {
-                    string plainText = tbPlainText.Text;
-                    int key = int.Parse(tbKey.Text);
+                    RailFence rf = new RailFence();
 
-                    string cipherText = rf.Encrypt(plainText, key);
+                    if (rbM1.IsChecked == true)
+                    {
+                        string plainText = tbPlainText.Text;
+                        int key = int.Parse(tbKey.Text);
 
-                    tbSummary.Text += cipherText;
+                        string cipherText = rf.Encrypt(plainText, key);
+
+                        tbSummary.Text += cipherText;
+                    }
+                    else
+                    {
+                        string cipherText = tbCipherText.Text;
+                        int key = int.Parse(tbKey.Text);
+
+                        string plainText = rf.Decrypt(cipherText, key);
+
+                        tbSummary.Text += plainText;
+                    }
                 }
-                else
+                catch (FormatException ex)
                 {
-                    string cipherText = tbCipherText.Text;
-                    int key = int.Parse(tbKey.Text);
-
-                    string plainText = rf.Decrypt(cipherText, key);
-
-                    tbSummary.Text += plainText;
+                    tbSummary.Text += ex.Message;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    tbSummary.Text += ex.Message;
+                }
+                catch (OverflowException ex)
+                {
+                    tbSummary.Text += ex.Message;
                 }
             }
             else if (rbA2.IsChecked == true)
