@@ -1,0 +1,62 @@
+﻿<Window x:Class="Crypto.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Crypto"
+        mc:Ignorable="d"
+        Title="Algorithms" Height="380" Width="500">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Przestawieniowe?engplox">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Name="lPlainText" Margin="3 8 3 3" Padding="4">Plain text:</Label>
+                        <Label Grid.Row="1" Margin="3" Padding="4">Key:</Label>
+                        <Label Name="lCipherText" Grid.Row="2" Margin="3" Padding="4" IsEnabled="False">Cipher text:</Label>
+                        <TextBox Name="tbPlainText" Grid.Column="1" Margin="3 8 3 3" Padding="4"/>
+                        <TextBox Name="tbKey" Grid.Row="1" Grid.Column="1" Margin="3" Padding="4"/>
+                        <TextBox Name="tbCipherText" Grid.Row="2" Grid.Column="1" Margin="3" Padding="4" IsEnabled="False"/>
+                        <Button Name="bPlainText" Grid.Column="2" Margin="3 8 3 3" Padding="8 4" Click="Clear1">Clear</Button>
+                        <Button Grid.Row="1" Grid.Column="2" Margin="3" Padding="8 4" Click="Clear2">Clear</Button>
+                        <Button Name="bCipherText" Grid.Row="2" Grid.Column="2" Margin="3" Padding="8 4" Click="Clear3" IsEnabled="False">Clear</Button>
+                    </Grid>
+
+                    <DockPanel>
+                        <GroupBox Header="Algorithm" Padding="2" Margin="2 5">
+                            <StackPanel>
+                                <RadioButton Name="rbA1" Margin="3 4" IsChecked="True">Rail fence</RadioButton>
+                                <RadioButton Name="rbA2" Margin="3 4">Sandra Polska</RadioButton>
+                                <RadioButton Name="rbA3" Margin="3 4">Janek</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Method" Padding="2" Margin="2 5" HorizontalAlignment="Left">
+                            <StackPanel ButtonBase.Click="Method_Click">
+                                <RadioButton Name="rbM1" Margin="3 4" IsChecked="True">Encryption</RadioButton>
+                                <RadioButton Name="rbM2" Margin="3 4">Decryption</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Button Margin="3" Padding="8 4" Click="LetsDoThis">Remove kebab</Button>
+                        </WrapPanel>
+                    </DockPanel>
+                    <TextBox Name="tbSummary" Height="90" Margin="3" Padding="4" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Group 2" />
+        </TabControl>
+    </Grid>
+</Window>
