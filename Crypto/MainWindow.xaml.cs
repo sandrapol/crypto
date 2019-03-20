@@ -46,6 +46,24 @@ namespace Crypto
             tbCipherText.Focus();
         }
 
+        private void Clear1sub(object sender, RoutedEventArgs e)
+        {
+            tbPlainText2.Text = "";
+            tbPlainText2.Focus();
+        }
+
+        private void Clear2sub(object sender, RoutedEventArgs e)
+        {
+            tbKey2.Text = "";
+            tbKey2.Focus();
+        }
+
+        private void Clear3sub(object sender, RoutedEventArgs e)
+        {
+            tbCipherText2.Text = "";
+            tbCipherText2.Focus();
+        }
+
         private void Method_Click(object sender, RoutedEventArgs e)
         {
             if (rbM1.IsChecked == true)
@@ -58,6 +76,28 @@ namespace Crypto
                 bPlainText.IsEnabled = true;
             }
             else if (rbM2.IsChecked == true)
+            {
+                lCipherText.IsEnabled = true;
+                tbCipherText.IsEnabled = true;
+                bCipherText.IsEnabled = true;
+                lPlainText.IsEnabled = false;
+                tbPlainText.IsEnabled = false;
+                bPlainText.IsEnabled = false;
+            }
+        }
+
+        private void Method_Click2(object sender, RoutedEventArgs e)
+        {
+            if (rb2M1.IsChecked == true)
+            {
+                CipherText2.IsEnabled = false;
+                tbCipherText2.IsEnabled = false;
+                bCipherText2.IsEnabled = false;
+                PlainText2.IsEnabled = true;
+                tbPlainText2.IsEnabled = true;
+                bPlainText2.IsEnabled = true;
+            }
+            else if (rb2M2.IsChecked == true)
             {
                 lCipherText.IsEnabled = true;
                 tbCipherText.IsEnabled = true;
