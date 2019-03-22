@@ -84,21 +84,21 @@
                     <DockPanel>
                         <GroupBox Header="Algorithm" Padding="2" Margin="2 5">
                             <StackPanel>
-                                <RadioButton Name="rb2A1" Margin="3 4" IsChecked="True">Rail fence</RadioButton>
-                                <RadioButton Name="rb2A2" Margin="3 4">Matrix</RadioButton>
-                                <RadioButton Name="rb2A3" Margin="3 4">Column Transposition</RadioButton>
+                                <RadioButton Name="rb2A1" Margin="3 4" IsChecked="True">Sandra Polska</RadioButton>
+                                <RadioButton Name="rb2A2" Margin="3 4">Janek</RadioButton>
+                                <RadioButton Name="rb2A3" Margin="3 4">Vigenere</RadioButton>
                             </StackPanel>
                         </GroupBox>
 
                         <GroupBox Header="Method" Padding="2" Margin="2 5" HorizontalAlignment="Left">
-                            <StackPanel ButtonBase.Click="Method_Click">
+                            <StackPanel ButtonBase.Click="Method_Click2">
                                 <RadioButton Name="rb2M1" Margin="3 4" IsChecked="True">Encryption</RadioButton>
                                 <RadioButton Name="rb2M2" Margin="3 4">Decryption</RadioButton>
                             </StackPanel>
                         </GroupBox>
 
                         <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                            <Button Margin="3" Padding="8 4" Click="LetsDoThis">OGIEŃ!</Button>
+                            <Button Margin="3" Padding="8 4" Click="LetsDoThis2">OGIEŃ!</Button>
                         </WrapPanel>
                     </DockPanel>
                     <TextBox Name="tbSummary2" Height="90" Margin="3" Padding="4" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>

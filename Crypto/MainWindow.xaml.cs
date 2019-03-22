@@ -26,6 +26,9 @@ namespace Crypto
             InitializeComponent();
         }
 
+        ////////// Sandra Polska //////////
+        ////////// --- tab1 --- //////////
+
         ColumnTransposition ct = new ColumnTransposition();
 
         private void Clear1(object sender, RoutedEventArgs e)
@@ -46,24 +49,6 @@ namespace Crypto
             tbCipherText.Focus();
         }
 
-        private void Clear1sub(object sender, RoutedEventArgs e)
-        {
-            tbPlainText2.Text = "";
-            tbPlainText2.Focus();
-        }
-
-        private void Clear2sub(object sender, RoutedEventArgs e)
-        {
-            tbKey2.Text = "";
-            tbKey2.Focus();
-        }
-
-        private void Clear3sub(object sender, RoutedEventArgs e)
-        {
-            tbCipherText2.Text = "";
-            tbCipherText2.Focus();
-        }
-
         private void Method_Click(object sender, RoutedEventArgs e)
         {
             if (rbM1.IsChecked == true)
@@ -76,28 +61,6 @@ namespace Crypto
                 bPlainText.IsEnabled = true;
             }
             else if (rbM2.IsChecked == true)
-            {
-                lCipherText.IsEnabled = true;
-                tbCipherText.IsEnabled = true;
-                bCipherText.IsEnabled = true;
-                lPlainText.IsEnabled = false;
-                tbPlainText.IsEnabled = false;
-                bPlainText.IsEnabled = false;
-            }
-        }
-
-        private void Method_Click2(object sender, RoutedEventArgs e)
-        {
-            if (rb2M1.IsChecked == true)
-            {
-                CipherText2.IsEnabled = false;
-                tbCipherText2.IsEnabled = false;
-                bCipherText2.IsEnabled = false;
-                PlainText2.IsEnabled = true;
-                tbPlainText2.IsEnabled = true;
-                bPlainText2.IsEnabled = true;
-            }
-            else if (rb2M2.IsChecked == true)
             {
                 lCipherText.IsEnabled = true;
                 tbCipherText.IsEnabled = true;
@@ -192,6 +155,86 @@ namespace Crypto
                     string plainText = ct.Decipher(cipherText, key, padChar);
                     plainText = Regex.Replace(plainText, @"\s", "");
                     tbSummary.Text += plainText;
+                }
+            }
+        }
+
+        ////////// Sandra Polska //////////
+        ////////// --- tab2 --- //////////
+
+        private void Clear1sub(object sender, RoutedEventArgs e)
+        {
+            tbPlainText2.Text = "";
+            tbPlainText2.Focus();
+        }
+
+        private void Clear2sub(object sender, RoutedEventArgs e)
+        {
+            tbKey2.Text = "";
+            tbKey2.Focus();
+        }
+
+        private void Clear3sub(object sender, RoutedEventArgs e)
+        {
+            tbCipherText2.Text = "";
+            tbCipherText2.Focus();
+        }
+
+        private void Method_Click2(object sender, RoutedEventArgs e)
+        {
+            if (rb2M1.IsChecked == true)
+            {
+                CipherText2.IsEnabled = false;
+                tbCipherText2.IsEnabled = false;
+                bCipherText2.IsEnabled = false;
+                PlainText2.IsEnabled = true;
+                tbPlainText2.IsEnabled = true;
+                bPlainText2.IsEnabled = true;
+            }
+            else if (rb2M2.IsChecked == true)
+            {
+                CipherText2.IsEnabled = true;
+                tbCipherText2.IsEnabled = true;
+                bCipherText2.IsEnabled = true;
+                PlainText2.IsEnabled = false;
+                tbPlainText2.IsEnabled = false;
+                bPlainText2.IsEnabled = false;
+            }
+        }
+
+        private void LetsDoThis2(object sender, RoutedEventArgs e)
+        {
+            tbSummary2.Text = "Result\n--\n";
+
+            if (rb2A1.IsChecked == true)
+            {
+
+            }
+            else if (rb2A2.IsChecked == true)
+            {
+
+            }
+            else if (rb2A3.IsChecked == true)
+            {
+                Vigenere vig = new Vigenere();
+
+                if (rb2M1.IsChecked == true)
+                {
+                    string plainText = tbPlainText2.Text;
+                    string key = tbKey2.Text;
+
+                    string cipherText = vig.Cipher(plainText, key, true);
+
+                    tbSummary2.Text += cipherText;
+                }
+                else
+                {
+                    string cipherText = tbCipherText2.Text;
+                    string key = tbKey2.Text;
+
+                    string plainText = vig.Cipher(cipherText, key, false);
+
+                    tbSummary2.Text += plainText;
                 }
             }
         }
