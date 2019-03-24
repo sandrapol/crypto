@@ -8,7 +8,7 @@
         Title="Algorithms" Height="380" Width="500">
     <Grid>
         <TabControl>
-            <TabItem Header="Przestawieniowe?engplox">
+            <TabItem Header="SHIFTED">
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -37,8 +37,8 @@
                         <GroupBox Header="Algorithm" Padding="2" Margin="2 5">
                             <StackPanel>
                                 <RadioButton Name="rbA1" Margin="3 4" IsChecked="True">Rail fence</RadioButton>
-                                <RadioButton Name="rbA2" Margin="3 4">Sandra Polska</RadioButton>
-                                <RadioButton Name="rbA3" Margin="3 4">Janek</RadioButton>
+                                <RadioButton Name="rbA2" Margin="3 4">Matrix</RadioButton>
+                                <RadioButton Name="rbA3" Margin="3 4">Column Transposition</RadioButton>
                             </StackPanel>
                         </GroupBox>
 
@@ -50,13 +50,60 @@
                         </GroupBox>
 
                         <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                            <Button Margin="3" Padding="8 4" Click="LetsDoThis">Remove kebab</Button>
+                            <Button Margin="3" Padding="8 4" Click="LetsDoThis">OGIEŃ!</Button>
                         </WrapPanel>
                     </DockPanel>
                     <TextBox Name="tbSummary" Height="90" Margin="3" Padding="4" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Group 2" />
+            <TabItem Header="SUBSTITUTION">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Name="PlainText2" Margin="3 8 3 3" Padding="4">Plain text:</Label>
+                        <Label Grid.Row="1" Margin="3" Padding="4">Key:</Label>
+                        <Label Name="CipherText2" Grid.Row="2" Margin="3" Padding="4" IsEnabled="False">Cipher text:</Label>
+                        <TextBox Name="tbPlainText2" Grid.Column="1" Margin="3 8 3 3" Padding="4"/>
+                        <TextBox Name="tbKey2" Grid.Row="1" Grid.Column="1" Margin="3" Padding="4"/>
+                        <TextBox Name="tbCipherText2" Grid.Row="2" Grid.Column="1" Margin="3" Padding="4" IsEnabled="False"/>
+                        <Button Name="bPlainText2" Grid.Column="2" Margin="3 8 3 3" Padding="8 4" Click="Clear1sub">Clear</Button>
+                        <Button Grid.Row="1" Grid.Column="2" Margin="3" Padding="8 4" Click="Clear2sub">Clear</Button>
+                        <Button Name="bCipherText2" Grid.Row="2" Grid.Column="2" Margin="3" Padding="8 4" Click="Clear3sub" IsEnabled="False">Clear</Button>
+                    </Grid>
+
+                    <DockPanel>
+                        <GroupBox Header="Algorithm" Padding="2" Margin="2 5">
+                            <StackPanel>
+                                <RadioButton Name="rb2A1" Margin="3 4" IsChecked="True">Sandra Polska</RadioButton>
+                                <RadioButton Name="rb2A2" Margin="3 4">Janek</RadioButton>
+                                <RadioButton Name="rb2A3" Margin="3 4">Vigenere</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Method" Padding="2" Margin="2 5" HorizontalAlignment="Left">
+                            <StackPanel ButtonBase.Click="Method_Click2">
+                                <RadioButton Name="rb2M1" Margin="3 4" IsChecked="True">Encryption</RadioButton>
+                                <RadioButton Name="rb2M2" Margin="3 4">Decryption</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Button Margin="3" Padding="8 4" Click="LetsDoThis2">OGIEŃ!</Button>
+                        </WrapPanel>
+                    </DockPanel>
+                    <TextBox Name="tbSummary2" Height="90" Margin="3" Padding="4" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>
+                </StackPanel>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

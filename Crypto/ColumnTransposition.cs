@@ -85,9 +85,11 @@ namespace Crypto
             return output.ToString();
         }
 
-        public  string Decipher(string input, string key)
+        public  string Decipher(string input, string key, char PadChar)
         {
             StringBuilder output = new StringBuilder();
+            input = (input.Length % key.Length == 0) ? input : input.PadRight(input.Length - (input.Length
+               % key.Length) + key.Length, PadChar);
             int totalChars = input.Length;
             int totalColumns = (int)Math.Ceiling((double)totalChars / key.Length);
             int totalRows = key.Length;
