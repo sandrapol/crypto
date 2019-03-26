@@ -84,7 +84,7 @@
                     <DockPanel>
                         <GroupBox Header="Algorithm" Padding="2" Margin="2 5">
                             <StackPanel>
-                                <RadioButton Name="rb2A1" Margin="3 4" IsChecked="True">Sandra Polska</RadioButton>
+                                <RadioButton Name="rb2A1" Margin="3 4" IsChecked="True">Column Transposition 2c</RadioButton>
                                 <RadioButton Name="rb2A2" Margin="3 4">Janek</RadioButton>
                                 <RadioButton Name="rb2A3" Margin="3 4">Vigenere</RadioButton>
                             </StackPanel>

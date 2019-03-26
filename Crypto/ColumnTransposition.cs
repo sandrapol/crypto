@@ -4,19 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace Crypto
 {
     class ColumnTransposition
     {
-        private static int[] GetShiftedIndexes(string key)
+        private List<char[]> codeTable;
+        private string key;
+        private string plainText;
+        private string result;
+        private int[] indexes;
+
+        public ColumnTransposition(string initial, string key)
+        {
+            this.plainText = initial.Replace(":", "").Replace(".", "").Replace(",", "").Replace(" ", "");
+            this.result = "";
+            this.key = key;
+            codeTable = new List<char[]>();
+            GetShiftedIndexes();
+        }
+
+        private void GetShiftedIndexes()
         {
             int keyLength = key.Length;
-            int[] indexes = new int[keyLength];
+            indexes = new int[keyLength];
             List<KeyValuePair<int, char>> sortedKey = new List<KeyValuePair<int, char>>();
             int i;
 
-            for(i = 0; i < keyLength; ++i)
+            for (i = 0; i < keyLength; ++i)
             {
                 sortedKey.Add(new KeyValuePair<int, char>(i, key[i]));
             }
@@ -31,96 +47,98 @@ namespace Crypto
             for (i = 0; i < keyLength; ++i)
                 indexes[sortedKey[i].Key] = i;
 
-            return indexes;
         }
 
-        public  string Encipher( string input, string key, char padChar)
+        public void code()
         {
-            //tu jest te uzupełnianie ostatniego wiersza jakimś podanym znakiem "padChar"
-            input = Regex.Replace(input, @"\s", "");
-            input = (input.Length % key.Length == 0) ? input : input.PadRight(input.Length - (input.Length
-                % key.Length) + key.Length, padChar);
-            
-            StringBuilder output = new StringBuilder();
-            int totalChars = input.Length;
-            int totalColumns = key.Length;
-            int totalRows = (int)Math.Ceiling((double)totalChars / totalColumns);
-            char[,] rowChars = new char[totalRows, totalColumns];
-            char[,] colChars = new char[totalColumns, totalRows];
-            char[,] sortedColChars = new char[totalColumns, totalRows];
+            int messageLength = plainText.Length;
+            int currentLetter = 0;
 
-            int currentRow, currentColumn, i, j;
-            int[] shiftIndexes = GetShiftedIndexes(key);
-
-            for(i = 0; i<totalChars; ++i)
+            while (currentLetter < messageLength)
             {
-                currentRow = i / totalColumns;
-                currentColumn = i % totalColumns;
-                rowChars[currentRow, currentColumn] = input[i];
-            }
-
-            for(i = 0; i<totalRows; ++i)
-            {
-                for(j = 0; j<totalColumns; ++j)
+                char[] tab = new char[key.Length];
+                for (int i = 0; i < key.Length; i++)
                 {
-                    colChars[j, i] = rowChars[i, j];
+                    if(currentLetter < messageLength) { 
+                     tab[i] = plainText[currentLetter];
+                    currentLetter++;
                 }
+                    else
+                        tab[i] = '#';
             }
-
-            for(i = 0; i<totalColumns; ++i)
-            {
-                for(j = 0; j<totalRows; ++j)
-                {
-                    sortedColChars[shiftIndexes[i], j] = colChars[i, j];  
-                }
+                codeTable.Add(tab);
             }
-
-            for(i = 0; i<totalChars; ++i)
-            {
-                currentRow = i / totalRows;
-                currentColumn = i % totalRows;
-                output.Append(sortedColChars[currentRow, currentColumn]);
-            }
-
-            return output.ToString();
         }
-
-        public  string Decipher(string input, string key, char PadChar)
+        public string GetCode()
         {
-            StringBuilder output = new StringBuilder();
-            input = (input.Length % key.Length == 0) ? input : input.PadRight(input.Length - (input.Length
-               % key.Length) + key.Length, PadChar);
-            int totalChars = input.Length;
-            int totalColumns = (int)Math.Ceiling((double)totalChars / key.Length);
-            int totalRows = key.Length;
-            char[,] rowChars = new char[totalRows, totalColumns];
-            char[,] colChars = new char[totalColumns, totalRows];
-            char[,] unsortedColChars = new char[totalColumns, totalRows];
-            int currentRow, currentColumn, i, j;
-            int[] shiftIndexes = GetShiftedIndexes(key);
-
-            for(i = 0; i < totalChars; ++i)
+            var builder = new StringBuilder();
+            int currentIndex;
+            for (int i = 0; i < key.Length; i++)
             {
-                currentRow = i / totalColumns;
-                currentColumn = i % totalColumns;
-                rowChars[currentRow, currentColumn] = input[i];
+                currentIndex = Array.FindIndex(indexes, e => e == i);
+                codeTable.ForEach(tab =>
+                {
+                    if (tab[currentIndex] != '#')
+                        builder.Append(tab[currentIndex]);
+               });
+            }
+            return builder.ToString();
+        }
+        public void decode()
+        {
+            int messageLength = plainText.Length;
+            int currentLetter = 0;
+
+            while (currentLetter < messageLength)
+            {
+                char[] tab = new char[key.Length];
+                for (int i = 0; i < key.Length; i++)
+                {
+                    if (currentLetter < messageLength)
+                    {
+                        tab[i] = '@';
+                        currentLetter++;
+                    }
+                    else
+                        tab[i] = '#';
+                }
+                codeTable.Add(tab);
             }
 
-            for (i = 0; i < totalRows; ++i)
-                for (j = 0; j < totalColumns; ++j)
-                    colChars[j, i] = rowChars[i, j];
+            currentLetter = 0;
+            int currentIndex;
 
-            for (i = 0; i < totalColumns; ++i)
-                for (j = 0; j < totalRows; ++j)
-                    unsortedColChars[i, j] = colChars[i, shiftIndexes[j]];
-
-            for (i = 0; i < totalChars; ++i)
+            for (int i = 0; i < key.Length; i++)
             {
-                currentRow = i / totalRows;
-                currentColumn = i % totalRows;
-                output.Append(unsortedColChars[currentRow, currentColumn]);
+                currentIndex = Array.FindIndex(indexes, e => e == i);
+                codeTable.ForEach(tab =>
+                {
+                    if (tab[currentIndex] != '#' && currentLetter < plainText.Length)
+                    {
+                        tab[currentIndex] = plainText[currentLetter];
+                        currentLetter++;
+                    }
+                    foreach (var it in tab)
+                        Debug.Write(it);
+                });
             }
-            return output.ToString();
+        }
+        public string GetDecode()
+        {
+            var builder = new StringBuilder();
+            int currentIndex;
+
+            codeTable.ForEach(tab =>
+            {
+                for (int i = 0; i < tab.Length; i++)
+                {
+                    if (tab[i] != '#')
+                        builder.Append(tab[i]);
+                }
+            });
+
+            return builder.ToString();
         }
     }
+
 }

@@ -43,6 +43,21 @@ namespace Crypto
             return result;
 
         }
+        public string getDecodeResult()
+        {
+            var builder = new StringBuilder();
+            foreach (var line in codeTable)
+            {
+                for (int i = 0; i < key.Length; i++)
+                    if (!Char.IsControl(line[i]))
+                        builder.Append(line[i]);
+
+            }
+            result = builder.ToString();
+
+            return result;
+
+        }
 
 
         public void code()
