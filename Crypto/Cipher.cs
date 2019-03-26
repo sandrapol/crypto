@@ -112,15 +112,7 @@ namespace Crypto
                     }
                 }
             });
-           /* for (int i = 0; i < plainText.Length; i++)
-            {
-                line[key[i % key.Length]-1] = plainText[i];
-                if (i % key.Length == (key.Length - 1) || i == plainText.Length - 1)
-                {
-                    codeTable.Add(line);
-                    line = new char[key.Length];
-                }
-            }*/
+           
             Debug.WriteLine(codeTable);
             foreach (var item in codeTable)
             {
