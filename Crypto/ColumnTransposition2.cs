@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace Crypto
 {
-    class ColumnTransposition
+    class ColumnTransposition2
     {
         private List<char[]> codeTable;
         private string key;
@@ -16,7 +15,7 @@ namespace Crypto
         private string result;
         private int[] indexes;
 
-        public ColumnTransposition(string initial, string key)
+        public ColumnTransposition2(string initial, string key)
         {
             this.plainText = initial.Replace(":", "").Replace(".", "").Replace(",", "").Replace(" ", "");
             this.result = "";
@@ -47,40 +46,51 @@ namespace Crypto
             for (i = 0; i < keyLength; ++i)
                 indexes[sortedKey[i].Key] = i;
 
+            foreach(var it in indexes)
+            {
+                Debug.Write(it+ " ");
+            }
+          
         }
 
         public void code()
         {
             int messageLength = plainText.Length;
             int currentLetter = 0;
-
+            int currentIndex =0;
+            int currentLenght = Array.FindIndex(indexes, e => e == currentIndex);
             while (currentLetter < messageLength)
             {
                 char[] tab = new char[key.Length];
-                for (int i = 0; i < key.Length; i++)
+                for(int i=0; i < key.Length; i++)
                 {
-                    if(currentLetter < messageLength) { 
-                     tab[i] = plainText[currentLetter];
-                    currentLetter++;
-                }
+                    if (i <= currentLenght)
+                    {
+                        tab[i] = plainText[currentLetter];
+                        currentLetter++;
+                    }
                     else
                         tab[i] = '#';
-            }
+                }
                 codeTable.Add(tab);
+                currentIndex++;
+                currentLenght = Array.FindIndex(indexes, e => e == currentIndex);
             }
         }
         public string GetCode()
         {
             var builder = new StringBuilder();
             int currentIndex;
-            for (int i = 0; i < key.Length; i++)
+            for(int i=0; i < key.Length; i++)
             {
-                currentIndex = Array.FindIndex(indexes, e => e == i);
+                currentIndex= Array.FindIndex(indexes, e => e == i);
                 codeTable.ForEach(tab =>
                 {
                     if (tab[currentIndex] != '#')
+                    {
                         builder.Append(tab[currentIndex]);
-               });
+                    }
+                });
             }
             return builder.ToString();
         }
@@ -88,26 +98,26 @@ namespace Crypto
         {
             int messageLength = plainText.Length;
             int currentLetter = 0;
-
+            int currentIndex = 0;
+            int currentLenght = Array.FindIndex(indexes, e => e == currentIndex);
             while (currentLetter < messageLength)
             {
                 char[] tab = new char[key.Length];
                 for (int i = 0; i < key.Length; i++)
                 {
-                    if (currentLetter < messageLength)
+                    if (i <= currentLenght)
                     {
-                        tab[i] = '@';
+                        tab[i] ='@';
                         currentLetter++;
                     }
                     else
                         tab[i] = '#';
                 }
                 codeTable.Add(tab);
+                currentIndex++;
+                currentLenght = Array.FindIndex(indexes, e => e == currentIndex);
             }
-
             currentLetter = 0;
-            int currentIndex;
-
             for (int i = 0; i < key.Length; i++)
             {
                 currentIndex = Array.FindIndex(indexes, e => e == i);
@@ -115,11 +125,9 @@ namespace Crypto
                 {
                     if (tab[currentIndex] != '#' && currentLetter < plainText.Length)
                     {
-                        tab[currentIndex] = plainText[currentLetter];
-                        currentLetter++;
+                      tab[currentIndex]=plainText[currentLetter];
+                        currentLetter++;   
                     }
-                    foreach (var it in tab)
-                        Debug.Write(it);
                 });
             }
         }
@@ -128,17 +136,16 @@ namespace Crypto
             var builder = new StringBuilder();
             int currentIndex;
 
-            codeTable.ForEach(tab =>
-            {
-                for (int i = 0; i < tab.Length; i++)
+                codeTable.ForEach(tab =>
                 {
-                    if (tab[i] != '#')
-                        builder.Append(tab[i]);
-                }
-            });
+                    for(int i=0;i<tab.Length; i++)
+                    {
+                        if (tab[i] != '#')
+                            builder.Append(tab[i]);
+                    }
+                });
 
             return builder.ToString();
         }
     }
-
 }

@@ -26,7 +26,6 @@ namespace Crypto
             InitializeComponent();
         }
 
-        ColumnTransposition ct = new ColumnTransposition();
 
         private void Clear1(object sender, RoutedEventArgs e)
         {
@@ -74,39 +73,60 @@ namespace Crypto
 
             if (rbA1.IsChecked == true)
             {
-                RailFence rf = new RailFence();
-               
-                if (rbM1.IsChecked == true)
+                try
                 {
-                    string plainText = tbPlainText.Text;
-                    int key = int.Parse(tbKey.Text);
+                    RailFence rf = new RailFence();
 
-                    string cipherText = rf.Encrypt(plainText, key);
+                    if (rbM1.IsChecked == true)
+                    {
+                        string plainText = tbPlainText.Text;
+                        int key = int.Parse(tbKey.Text);
 
-                    tbSummary.Text += cipherText;
+                        string cipherText = rf.Encrypt(plainText, key);
+
+                        tbSummary.Text += cipherText;
+                    }
+                    else
+                    {
+                        string cipherText = tbCipherText.Text;
+                        int key = int.Parse(tbKey.Text);
+
+                        string plainText = rf.Decrypt(cipherText, key);
+
+                        tbSummary.Text += plainText;
+                    }
                 }
-                else
+                catch (FormatException ex)
                 {
-                    string cipherText = tbCipherText.Text;
-                    int key = int.Parse(tbKey.Text);
-
-                    string plainText = rf.Decrypt(cipherText, key);
-
-                    tbSummary.Text += plainText;
+                    tbSummary.Text += ex.Message;
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    tbSummary.Text += ex.Message;
+                }
+                catch (OverflowException ex)
+                {
+                    tbSummary.Text += ex.Message;
                 }
             }
             else if (rbA2.IsChecked == true)
             {
                 try
                 {
-                    Cipher cipher = new Cipher(tbPlainText.Text, tbKey.Text);
+                    Cipher cipher;
                     if (rbM1.IsChecked == true)
                     {
+                        cipher = new Cipher(tbPlainText.Text, tbKey.Text);
                         cipher.code();
+                        tbSummary.Text += cipher.getResult();
                     }
                     else
+                    {
+                        cipher = new Cipher(tbCipherText.Text, tbKey.Text);
                         cipher.decode();
-                    tbSummary.Text += cipher.getResult();
+                        tbSummary.Text += cipher.getDecodeResult();
+                    }
+                    
                 }
                 catch (ArgumentException ex)
                 {
@@ -117,26 +137,110 @@ namespace Crypto
             else if (rbA3.IsChecked == true)
             {
                 if (rbM1.IsChecked == true)
-                { 
-                string plainText = tbPlainText.Text;
-                string key = tbKey.Text;
-                char padChar = ' ';
-
-                string cipherText = ct.Encipher(plainText, key, padChar);
-                cipherText = Regex.Replace(cipherText, @"\s", "");
-
-                tbSummary.Text += cipherText;
+                {
+                    ColumnTransposition coder = new ColumnTransposition(tbPlainText.Text, tbKey.Text);
+                    coder.code();
+                    tbSummary.Text += coder.GetCode();
                 }
 
+                if (rbM2.IsChecked == true)
+                {
+                    ColumnTransposition coder = new ColumnTransposition(tbCipherText.Text, tbKey.Text);
+                    coder.decode();
+                    tbSummary.Text += coder.GetDecode();
+                }
+            }
+        }
+
+        ////////// Sandra Polska //////////
+        ////////// --- tab2 --- //////////
+
+        private void Clear1sub(object sender, RoutedEventArgs e)
+        {
+            tbPlainText2.Text = "";
+            tbPlainText2.Focus();
+        }
+
+        private void Clear2sub(object sender, RoutedEventArgs e)
+        {
+            tbKey2.Text = "";
+            tbKey2.Focus();
+        }
+
+        private void Clear3sub(object sender, RoutedEventArgs e)
+        {
+            tbCipherText2.Text = "";
+            tbCipherText2.Focus();
+        }
+
+        private void Method_Click2(object sender, RoutedEventArgs e)
+        {
+            if (rb2M1.IsChecked == true)
+            {
+                CipherText2.IsEnabled = false;
+                tbCipherText2.IsEnabled = false;
+                bCipherText2.IsEnabled = false;
+                PlainText2.IsEnabled = true;
+                tbPlainText2.IsEnabled = true;
+                bPlainText2.IsEnabled = true;
+            }
+            else if (rb2M2.IsChecked == true)
+            {
+                CipherText2.IsEnabled = true;
+                tbCipherText2.IsEnabled = true;
+                bCipherText2.IsEnabled = true;
+                PlainText2.IsEnabled = false;
+                tbPlainText2.IsEnabled = false;
+                bPlainText2.IsEnabled = false;
+            }
+        }
+
+        private void LetsDoThis2(object sender, RoutedEventArgs e)
+        {
+            tbSummary2.Text = "Result\n--\n";
+
+            if (rb2A1.IsChecked == true)
+            {
+                if (rb2M1.IsChecked == true)
+                {
+                    ColumnTransposition2 coder = new ColumnTransposition2(tbPlainText2.Text, tbKey2.Text);
+                    coder.code();
+                    tbSummary2.Text += coder.GetCode();
+                }
+                if (rb2M2.IsChecked == true)
+                {
+
+                    ColumnTransposition2 coder = new ColumnTransposition2(tbCipherText2.Text, tbKey2.Text);
+                    coder.decode();
+                    tbSummary2.Text += coder.GetDecode();
+                }
+
+            }
+            else if (rb2A2.IsChecked == true)
+            {
+
+            }
+            else if (rb2A3.IsChecked == true)
+            {
+                Vigenere vig = new Vigenere();
+
+                if (rb2M1.IsChecked == true)
+                {
+                    string plainText = tbPlainText2.Text;
+                    string key = tbKey2.Text;
+
+                    string cipherText = vig.Cipher(plainText, key, true);
+
+                    tbSummary2.Text += cipherText;
+                }
                 else
                 {
-                    string cipherText = tbCipherText.Text;
-                    string key = tbKey.Text;
+                    string cipherText = tbCipherText2.Text;
+                    string key = tbKey2.Text;
 
-                    string plainText = ct.Decipher(cipherText, key);
+                    string plainText = vig.Cipher(cipherText, key, false);
 
-                    plainText = Regex.Replace(plainText, @"\s", "");
-                    tbSummary.Text += plainText;
+                    tbSummary2.Text += plainText;
                 }
             }
         }
