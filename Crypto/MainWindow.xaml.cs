@@ -218,6 +218,25 @@ namespace Crypto
             }
             else if (rb2A2.IsChecked == true)
             {
+                JuliuszCezar juliusz = new JuliuszCezar();
+                if (rb2M1.IsChecked == true)
+                {
+                    string plainText = tbPlainText2.Text;
+                    int key = int.Parse(tbKey2.Text);
+
+                    string cipherText = juliusz.Encipher(plainText,key);
+
+                    tbSummary2.Text += cipherText;
+                }
+                else
+                {
+                    string cipherText = tbCipherText2.Text;
+                    int key = int.Parse(tbKey2.Text);
+
+                    string plainText = juliusz.Decipher(cipherText,key);
+
+                    tbSummary2.Text += plainText;
+                }
 
             }
             else if (rb2A3.IsChecked == true)
