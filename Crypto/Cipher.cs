@@ -60,6 +60,7 @@ namespace Crypto
         }
 
 
+
         public void code()
         {
             this.codeTable = new List<char[]>();
@@ -88,13 +89,38 @@ namespace Crypto
             char[] line = new char[key.Length];
             for (int i = 0; i < plainText.Length; i++)
             {
-                line[key[i % key.Length]-1] = plainText[i];
+                line[i % key.Length] = '#';
                 if (i % key.Length == (key.Length - 1) || i == plainText.Length - 1)
                 {
                     codeTable.Add(line);
                     line = new char[key.Length];
                 }
             }
+            int currentLetter = 0;
+            codeTable.ForEach(tab =>
+            {
+                for(int i = 0; i < tab.Length; i++)
+                {
+                    Debug.WriteLine("klucz"+key[i]);
+                    Debug.WriteLine("linia"+tab[key[i] - 1]);
+                    Debug.WriteLine("Tekst"+plainText[currentLetter]);
+                    if (tab[key[i] - 1]=='#' && currentLetter<plainText.Length)
+                    {
+                      
+                        tab[key[i] - 1] = plainText[currentLetter];
+                        currentLetter++;
+                    }
+                }
+            });
+           /* for (int i = 0; i < plainText.Length; i++)
+            {
+                line[key[i % key.Length]-1] = plainText[i];
+                if (i % key.Length == (key.Length - 1) || i == plainText.Length - 1)
+                {
+                    codeTable.Add(line);
+                    line = new char[key.Length];
+                }
+            }*/
             Debug.WriteLine(codeTable);
             foreach (var item in codeTable)
             {
