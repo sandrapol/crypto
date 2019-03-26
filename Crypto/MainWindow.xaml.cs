@@ -208,6 +208,19 @@ namespace Crypto
 
             if (rb2A1.IsChecked == true)
             {
+                if (rb2M1.IsChecked == true)
+                {
+                    ColumnTransposition2 coder = new ColumnTransposition2(tbPlainText2.Text, tbKey2.Text);
+                    coder.code();
+                    tbSummary2.Text += coder.GetCode();
+                }
+                if (rb2M2.IsChecked == true)
+                {
+
+                    ColumnTransposition2 coder = new ColumnTransposition2(tbCipherText2.Text, tbKey2.Text);
+                    coder.decode();
+                    tbSummary2.Text += coder.GetDecode();
+                }
 
             }
             else if (rb2A2.IsChecked == true)
