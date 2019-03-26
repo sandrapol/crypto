@@ -26,10 +26,6 @@ namespace Crypto
             InitializeComponent();
         }
 
-        ////////// Sandra Polska //////////
-        ////////// --- tab1 --- //////////
-
-        ColumnTransposition ct = new ColumnTransposition();
 
         private void Clear1(object sender, RoutedEventArgs e)
         {
@@ -117,14 +113,20 @@ namespace Crypto
             {
                 try
                 {
-                    Cipher cipher = new Cipher(tbPlainText.Text, tbKey.Text);
+                    Cipher cipher;
                     if (rbM1.IsChecked == true)
                     {
+                        cipher = new Cipher(tbPlainText.Text, tbKey.Text);
                         cipher.code();
+                        tbSummary.Text += cipher.getResult();
                     }
                     else
+                    {
+                        cipher = new Cipher(tbCipherText.Text, tbKey.Text);
                         cipher.decode();
-                    tbSummary.Text += cipher.getResult();
+                        tbSummary.Text += cipher.getDecodeResult();
+                    }
+                    
                 }
                 catch (ArgumentException ex)
                 {
@@ -135,26 +137,17 @@ namespace Crypto
             else if (rbA3.IsChecked == true)
             {
                 if (rbM1.IsChecked == true)
-                { 
-                string plainText = tbPlainText.Text;
-                string key = tbKey.Text;
-                char padChar = ' ';
-
-                string cipherText = ct.Encipher(plainText, key, padChar);
-                cipherText = Regex.Replace(cipherText, @"\s", "");
-
-                tbSummary.Text += cipherText;
+                {
+                    ColumnTransposition coder = new ColumnTransposition(tbPlainText.Text, tbKey.Text);
+                    coder.code();
+                    tbSummary.Text += coder.GetCode();
                 }
 
-                else
+                if (rbM2.IsChecked == true)
                 {
-                    string cipherText = tbCipherText.Text;
-                    string key = tbKey.Text;
-                    char padChar = ' ';
-
-                    string plainText = ct.Decipher(cipherText, key, padChar);
-                    plainText = Regex.Replace(plainText, @"\s", "");
-                    tbSummary.Text += plainText;
+                    ColumnTransposition coder = new ColumnTransposition(tbCipherText.Text, tbKey.Text);
+                    coder.decode();
+                    tbSummary.Text += coder.GetDecode();
                 }
             }
         }
