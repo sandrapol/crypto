@@ -263,5 +263,97 @@ namespace Crypto
                 }
             }
         }
+
+        ////////// -- Stream -- //////////
+        ////////// --- tab3 --- //////////
+
+        private void Clear1a(object sender, RoutedEventArgs e)
+        {
+            tbInput.Text = "";
+            tbInput.Focus();
+        }
+
+        private void Clear2a(object sender, RoutedEventArgs e)
+        {
+            tbKey3.Text = "";
+            tbKey3.Focus();
+        }
+
+        private void Clear3a(object sender, RoutedEventArgs e)
+        {
+            tbFile.Text = "";
+            tbFile.Focus();
+        }
+
+        private void Method_Click3(object sender, RoutedEventArgs e)
+        {
+            if (rA1.IsChecked == true)
+            {
+                lInput.IsEnabled = true;
+                tbInput.IsEnabled = true;
+                bInput.IsEnabled = true;
+                lFile.IsEnabled = false;
+                tbFile.IsEnabled = false;
+                bFile.IsEnabled = false;
+            }
+            else
+            {         
+                lInput.IsEnabled = false;
+                tbInput.IsEnabled = false;
+                bInput.IsEnabled = false;
+                lFile.IsEnabled = true;
+                tbFile.IsEnabled = true;
+                bFile.IsEnabled = true;
+            }
+        }
+
+        private void LoadFile(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+
+            Nullable<bool> result = openFileDlg.ShowDialog();
+
+            if (result == true)
+            {
+                tbFile.Text = openFileDlg.FileName;
+
+                //Co zrobić po otworzeniu pliku
+                tbSummary3.Text = System.IO.File.ReadAllText(openFileDlg.FileName);
+            }
+        }
+
+        private void LetsDoThis3(object sender, RoutedEventArgs e)
+        {
+            tbSummary3.Text = "Result\n--\n";
+
+            if (rA1.IsChecked == true)
+            {
+                //MyLFSR lfsr = new MyLFSR();
+
+                if (rM1.IsChecked == true)
+                {
+                    /*
+                    string input = tbInput.Text;
+                    int key = int.Parse(tbKey3.Text);
+
+                    string output = lfsr.Encrypt(input, key);
+
+                    tbSummary3.Text += output;
+                    */
+                }
+                else
+                {
+                    //tbSummary3.Text += "Decrypt";
+                }
+            }
+            else if (rA2.IsChecked == true)
+            {
+
+            }
+            else if (rA3.IsChecked == true)
+            {
+
+            }
+        }
     }
 }
