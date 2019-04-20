@@ -289,9 +289,10 @@ namespace Crypto
         {
             if (rA1.IsChecked == true)
             {
-                lInput.IsEnabled = true;
-                tbInput.IsEnabled = true;
-                bInput.IsEnabled = true;
+                lKey3.IsEnabled = true;
+                tbKey3.IsEnabled = true;
+                bKey3.IsEnabled = true;
+
                 lFile.IsEnabled = false;
                 tbFile.IsEnabled = false;
                 bFile.IsEnabled = false;
@@ -299,10 +300,11 @@ namespace Crypto
                 rM2.IsEnabled = false;
             }
             else
-            {         
-                //lInput.IsEnabled = false;
-                //tbInput.IsEnabled = false;
-                //bInput.IsEnabled = false;
+            {
+                lKey3.IsEnabled = false;
+                tbKey3.IsEnabled = false;
+                bKey3.IsEnabled = false;
+
                 lFile.IsEnabled = true;
                 tbFile.IsEnabled = true;
                 bFile.IsEnabled = true;
@@ -320,11 +322,13 @@ namespace Crypto
             if (result == true)
             {
                 tbFile.Text = openFileDlg.FileName;
-
-                //Co zrobić po otworzeniu pliku
-                tbSummary3.Text = System.IO.File.ReadAllText(openFileDlg.FileName);
+                tbSummary3.Text = "Plik wczytano prawidłowo.";
             }
         }
+
+
+        List<int> sscBinary;
+        List<int> lfsrBinary;
 
         private void LetsDoThis3(object sender, RoutedEventArgs e)
         {
@@ -332,37 +336,65 @@ namespace Crypto
 
             if (rA1.IsChecked == true)
             {
-                LFSR lfsr = new LFSR();
-
-                if (rM1.IsChecked == true)
+                try
                 {
-                    string iteretations = "", output = "";
-                    string LFSRdegree = tbInput.Text;
+                    LFSR lfsr = new LFSR();
 
-                    if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
+                    if (rM1.IsChecked == true)
                     {
-                        iteretations = "\n--\n";
-                        output = lfsr.Encrypt(LFSRdegree, lfsrLength, ref iteretations);
-                    }
+                        string iteretations = "", output = "";
+                        string LFSRdegree = tbInput.Text;
 
-                    tbSummary3.Text += output + iteretations;
+                        if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
+                        {
+                            iteretations = "\n--\n";
+                            output = lfsr.Encrypt(LFSRdegree, lfsrLength, ref iteretations);
+                        }
+
+                        tbSummary3.Text += output + iteretations;
+                    }
                 }
-                else
+                catch(FormatException ex)
                 {
-                    tbSummary3.Text += "Decrypt";
+                    tbSummary3.Text = ex.Message;
+                }
+                catch(ArgumentOutOfRangeException ex)
+                {
+                    tbSummary3.Text = ex.Message;
                 }
             }
             else if (rA2.IsChecked == true)
             {
-                SynchronousStreamCipher ssc = new SynchronousStreamCipher(tbFile.Text, tbInput.Text, tbKey3.Text);
+                SynchronousStreamCipher ssc = new SynchronousStreamCipher(tbInput.Text, tbFile.Text);
 
-                if (rM1.IsChecked == true)
+                try
                 {
-                    ssc.Main();
+                    if (rM1.IsChecked == true)
+                    {
+                        ssc.Encrypt(ref lfsrBinary, ref sscBinary);
+                        tbSummary3.Text += "Check new file";
+                    }
+                    else
+                    {
+                        tbSummary3.Text += ssc.Decrypt(ref lfsrBinary, ref sscBinary);
+                    }
+
                 }
-                else
+                catch (ArgumentException ex)
                 {
-                    tbSummary3.Text += "Decrypt";
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (FormatException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (System.IO.FileNotFoundException ex)
+                {
+                    tbSummary3.Text = ex.Message;
                 }
             }
             else if (rA3.IsChecked == true)
