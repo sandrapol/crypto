@@ -118,8 +118,8 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Label Name="lInput" Margin="3 8 3 3" Padding="4">Input:</Label>
-                        <Label Grid.Row="1" Margin="3" Padding="4">Iterations:</Label>
+                        <Label Name="lInput" Margin="3 8 3 3" Padding="4">Polynomial's degrees:</Label>
+                        <Label Grid.Row="1" Margin="3" Padding="4">LFSR lenght:</Label>
                         <Label Name="lFile" Grid.Row="2" Margin="3" Padding="4" IsEnabled="False">File:</Label>
                         <TextBox Name="tbInput" Grid.Column="1" Margin="3 8 3 3" Padding="4"/>
                         <TextBox Name="tbKey3" Grid.Row="1" Grid.Column="1" Margin="3" Padding="4"/>
@@ -141,7 +141,7 @@
                         <GroupBox Header="Method" Padding="2" Margin="2 5" HorizontalAlignment="Left">
                             <StackPanel>
                                 <RadioButton Name="rM1" Margin="3 4" IsChecked="True">Encryption</RadioButton>
-                                <RadioButton Name="rM2" Margin="3 4">Decryption</RadioButton>
+                                <RadioButton Name="rM2" Margin="3 4" IsEnabled="False">Decryption</RadioButton>
                             </StackPanel>
                         </GroupBox>
 

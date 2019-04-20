@@ -295,15 +295,19 @@ namespace Crypto
                 lFile.IsEnabled = false;
                 tbFile.IsEnabled = false;
                 bFile.IsEnabled = false;
+
+                rM2.IsEnabled = false;
             }
             else
             {         
-                lInput.IsEnabled = false;
-                tbInput.IsEnabled = false;
-                bInput.IsEnabled = false;
+                //lInput.IsEnabled = false;
+                //tbInput.IsEnabled = false;
+                //bInput.IsEnabled = false;
                 lFile.IsEnabled = true;
                 tbFile.IsEnabled = true;
                 bFile.IsEnabled = true;
+
+                rM2.IsEnabled = true;
             }
         }
 
@@ -328,27 +332,38 @@ namespace Crypto
 
             if (rA1.IsChecked == true)
             {
-                //MyLFSR lfsr = new MyLFSR();
+                LFSR lfsr = new LFSR();
 
                 if (rM1.IsChecked == true)
                 {
-                    /*
-                    string input = tbInput.Text;
-                    int key = int.Parse(tbKey3.Text);
+                    string iteretations = "", output = "";
+                    string LFSRdegree = tbInput.Text;
 
-                    string output = lfsr.Encrypt(input, key);
+                    if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
+                    {
+                        iteretations = "\n--\n";
+                        output = lfsr.Encrypt(LFSRdegree, lfsrLength, ref iteretations);
+                    }
 
-                    tbSummary3.Text += output;
-                    */
+                    tbSummary3.Text += output + iteretations;
                 }
                 else
                 {
-                    //tbSummary3.Text += "Decrypt";
+                    tbSummary3.Text += "Decrypt";
                 }
             }
             else if (rA2.IsChecked == true)
             {
+                SynchronousStreamCipher ssc = new SynchronousStreamCipher(tbFile.Text, tbInput.Text, tbKey3.Text);
 
+                if (rM1.IsChecked == true)
+                {
+                    ssc.Main();
+                }
+                else
+                {
+                    tbSummary3.Text += "Decrypt";
+                }
             }
             else if (rA3.IsChecked == true)
             {
