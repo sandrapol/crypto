@@ -119,13 +119,13 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Name="lInput" Margin="3 8 3 3" Padding="4">Polynomial's degrees:</Label>
-                        <Label Grid.Row="1" Margin="3" Padding="4">LFSR lenght:</Label>
+                        <Label Name="lKey3" Grid.Row="1" Margin="3" Padding="4">LFSR lenght:</Label>
                         <Label Name="lFile" Grid.Row="2" Margin="3" Padding="4" IsEnabled="False">File:</Label>
                         <TextBox Name="tbInput" Grid.Column="1" Margin="3 8 3 3" Padding="4"/>
                         <TextBox Name="tbKey3" Grid.Row="1" Grid.Column="1" Margin="3" Padding="4"/>
                         <TextBox Name="tbFile" Grid.Row="2" Grid.Column="1" Margin="3" Padding="4" IsEnabled="False"/>
                         <Button Name="bInput" Grid.Column="2" Margin="3 8 3 3" Padding="8 4" Click="Clear1a">Clear</Button>
-                        <Button Grid.Row="1" Grid.Column="2" Margin="3" Padding="8 4" Click="Clear2a">Clear</Button>
+                        <Button Name="bKey3" Grid.Row="1" Grid.Column="2" Margin="3" Padding="8 4" Click="Clear2a">Clear</Button>
                         <Button Name="bFile" Grid.Row="2" Grid.Column="2" Margin="3" Padding="8 4" Click="LoadFile" IsEnabled="False">Load file</Button>
                     </Grid>
 

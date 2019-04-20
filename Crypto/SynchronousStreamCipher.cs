@@ -9,41 +9,40 @@ namespace Crypto
 {
     class SynchronousStreamCipher
     {
-        private List<int> seed;
-        private readonly string polyString;
+        private readonly string LFSRdegree;
         private readonly string fileName;
         private readonly string fileName2;
 
-        public SynchronousStreamCipher(string fileName, string polyString, string seedString)
+        public SynchronousStreamCipher(string LFSRdegree, string fileName)
         {
             this.fileName = fileName;
-            this.polyString = polyString;
+            this.LFSRdegree = LFSRdegree;
 
             fileName2 = fileName.Replace(".txt", "2.txt");
-
-            seed = new List<int>();
-
-            foreach (char c in seedString)
-            {
-                seed.Add(c);
-            }
         }
 
-        // throws IOException
         public void Main()
         {
-            List<int> toxor = new List<int>();
-            List<int> xor = new List<int>();
+            List<int> fileBinary = new List<int>();
+            List<int> lfsrBinary = new List<int>();
 
-            toxor = ReadFile(toxor, fileName);
+            fileBinary = ReadFile(fileBinary, fileName);
+            int fileLength = fileBinary.Count;
 
-            xor = Operations(toxor.Count);
+            LFSR lfsr = new LFSR();
+            string blank = "";
+            string lfsrOutput = lfsr.Encrypt(LFSRdegree, fileLength, ref blank);
+
+            foreach(char c in lfsrOutput)
+            {
+                lfsrBinary.Add(int.Parse(c.ToString()));
+            }
 
             List<int> result = new List<int>();
 
-            for (int i = 0; i < toxor.Count; i++)
+            for (int i = 0; i < fileBinary.Count; i++)
             {
-                if (toxor[i] == xor[i])
+                if (fileBinary[i] == lfsrBinary[i])
                 {
                     result.Add(0);
                 }
@@ -53,51 +52,10 @@ namespace Crypto
                 }
             }
 
-
-            List<string> letters = new List<string>();
-            string a = "";
-
-            for (int i = 0; i < result.Count; i++)
-            {
-                if (i % 8 != 0 || i == 0)
-                {
-                    a += result[i].ToString();
-                }
-                else
-                {
-                    letters.Add(a);
-                    a = "";
-                    a += result[i].ToString();
-                }
-
-                if (i == result.Count - 1)
-                {
-                    letters.Add(a);
-                }
-            }
-
-            List<int> numbers = new List<int>();
-
-            for (int i = 0; i < letters.Count; i++)
-            {
-                int number = Convert.ToInt32(letters[i], 2);
-                numbers.Add(number);
-            }
-
-            SaveFile(numbers, fileName2);
+            SaveFile(result, fileName2);
         }
 
-        public void Main2()
-        {
-            List<int> toxor = new List<int>();
-            List<int> xor = new List<int>();
-
-
-        }
-
-
-        // throws FileNotFoundException, IOException
-        public static List<int> ReadFile(List<int> toxor, string file)
+        public static List<int> ReadFile(List<int> fileBinary, string file)
         {
             StreamReader sr = new StreamReader(file);
             int _byte;
@@ -136,145 +94,63 @@ namespace Crypto
                 {
                     if (letter[j] == '0')
                     {
-                        toxor.Add(0);
+                        fileBinary.Add(0);
                     }
                     else
                     {
-                        toxor.Add(1);
+                        fileBinary.Add(1);
                     }
                 }
             }
 
             sr.Close();
 
-            return toxor;
+            return fileBinary;
         }
 
-        //  throws IOException
-        public List<int> Operations(int listCount)
+        public void SaveFile(List<int> result, string fileName)
         {
-            List<int> polynomial = new List<int>();
-            string[] polyArray = polyString.Split(' ');
+            List<string> letters = new List<string>();
+            string a = "";
 
-            foreach (string s in polyArray)
+            for (int i = 0; i < result.Count; i++)
             {
-                polynomial.Add(int.Parse(s));
-            }
-
-            /// seed 111001
-
-            //// seed - from LFSR!!!! ////
-            //List<int> seed = new List<int>();
-
-            //for (int i = 0; i < polynomial[polynomial.Count - 1]; i++)
-            //{
-            //    seed.Add(0);
-            //}
-
-            ////
-
-            List<int> result = new List<int>();
-            int xor = 0;
-            
-            for (int i = 0; i < listCount; i++)
-            {
-                List<int> temp = new List<int>();
-
-                for (int j = 0; j < polynomial.Count; j++)
+                if (i % 8 != 0 || i == 0)
                 {
-                    temp.Add(seed[polynomial[j] - 1]);
-                }
-
-                xor = XORfunc(temp);
-                seed = Scroll(seed, xor);
-
-                /// not used?
-                //int number = To10(seed);
-                result.Add(xor);
-            }
-
-            return result;
-        }
-
-        //throws FileNotFoundException, IOException
-        //public static void SaveFile(List<int> result, string file)
-        //{
-        //    StreamWriter fos = new StreamWriter(file);
-        //    int i = result.Count;
-        //    int tmp = result.Count;
-        //    byte[] dane_zaszyfrowane = new byte[tmp];
-
-        //    for (int j = 0; j < tmp; j++)
-        //    {
-        //        dane_zaszyfrowane[j] = (byte)(int)result[j];
-        //        fos.Write(dane_zaszyfrowane[j]);
-        //    }
-
-        //    //fos.Write(dane_zaszyfrowane);
-        //    fos.Close();
-        //}
-
-        public void SaveFile(List<int> wynik, String nazwa)
-        {
-            FileStream fileOutput = new FileStream(nazwa, FileMode.Create, FileAccess.Write);
-            int i = wynik.Count;
-            int tmp = wynik.Count;
-            byte[] dane_zaszyfrowane = new byte[tmp];
-            for (int j = 0; j < tmp; j++)
-            {
-
-                dane_zaszyfrowane[j] = (byte)wynik[j];
-
-            }
-            fileOutput.Write(dane_zaszyfrowane, 0, dane_zaszyfrowane.Length);
-            fileOutput.Close();
-        }
-
-    public static int XORfunc(List<int> list)
-        {
-            int xor = list[list.Count - 1];
-
-            for (int i = list.Count - 2; i >= 0; i--)
-            {
-                if (xor == list[i])
-                {
-                    xor = 0;
+                    a += result[i].ToString();
                 }
                 else
                 {
-                    xor = 1;
+                    letters.Add(a);
+                    a = "";
+                    a += result[i].ToString();
                 }
-            }
 
-            return xor;
-        }
-
-        public static List<int> Scroll(List<int> list, int xor)
-        {
-            List<int> temp = new List<int>();
-            temp.Add(xor);
-
-            for (int i = 0; i < list.Count - 1; i++)
-            {
-                temp.Insert(i + 1, list[i]);
-            }
-
-            return temp;
-        }
-
-        public static int To10(List<int> list)
-        {
-            int number = 0;
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i] == 1)
+                if (i == result.Count - 1)
                 {
-                    number += (int)Math.Pow(2, i);
+                    letters.Add(a);
                 }
             }
 
-            return number;
+            List<int> numbers = new List<int>();
+
+            for (int i = 0; i < letters.Count; i++)
+            {
+                int number = Convert.ToInt32(letters[i], 2);
+                numbers.Add(number);
+            }
+
+            FileStream fileOutput = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            int count = numbers.Count;
+            byte[] encryptedData = new byte[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                encryptedData[i] = (byte)numbers[i];
+            }
+
+            fileOutput.Write(encryptedData, 0, encryptedData.Length);
+            fileOutput.Close();
         }
     }
 }
