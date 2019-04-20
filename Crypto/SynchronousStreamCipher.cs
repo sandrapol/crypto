@@ -21,10 +21,10 @@ namespace Crypto
             fileName2 = fileName.Replace(".txt", "2.txt");
         }
 
-        public void Main()
+        public void Encrypt(ref List<int> sscBinary, ref List<int> lfsrBinary)
         {
             List<int> fileBinary = new List<int>();
-            List<int> lfsrBinary = new List<int>();
+            lfsrBinary = new List<int>();
 
             fileBinary = ReadFile(fileBinary, fileName);
             int fileLength = fileBinary.Count;
@@ -52,7 +52,32 @@ namespace Crypto
                 }
             }
 
+            //decrypt ssc
+            sscBinary = result;
+
             SaveFile(result, fileName2);
+        }
+
+        public string Decrypt(ref List<int> sscBinary, ref List<int> lfsrBinary)
+        {
+            string output = "";
+
+            if(sscBinary.Any() && lfsrBinary.Any())
+            {
+                for(int i = 0; i < sscBinary.Count; i++)
+                {
+                    output += XOR(sscBinary[i], lfsrBinary[i]);
+                }
+            }
+
+            return output;
+        }
+
+        int XOR(int a, int b)
+        {
+            if (a == b)
+                return 0;
+            else return 1;
         }
 
         public static List<int> ReadFile(List<int> fileBinary, string file)

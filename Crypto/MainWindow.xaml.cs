@@ -326,6 +326,10 @@ namespace Crypto
             }
         }
 
+
+        List<int> sscBinary;
+        List<int> lfsrBinary;
+
         private void LetsDoThis3(object sender, RoutedEventArgs e)
         {
             tbSummary3.Text = "Result\n--\n";
@@ -363,33 +367,34 @@ namespace Crypto
             {
                 SynchronousStreamCipher ssc = new SynchronousStreamCipher(tbInput.Text, tbFile.Text);
 
-                if (rM1.IsChecked == true)
+                try
                 {
-                    try
+                    if (rM1.IsChecked == true)
                     {
-                        ssc.Main();
+                        ssc.Encrypt(ref lfsrBinary, ref sscBinary);
                         tbSummary3.Text += "Check new file";
                     }
-                    catch(ArgumentException ex)
+                    else
                     {
-                        tbSummary3.Text = ex.Message;
+                        tbSummary3.Text += ssc.Decrypt(ref lfsrBinary, ref sscBinary);
                     }
-                    catch(InvalidOperationException ex)
-                    {
-                        tbSummary3.Text = ex.Message;
-                    }
-                    catch(FormatException ex)
-                    {
-                        tbSummary3.Text = ex.Message;
-                    }
-                    catch(System.IO.FileNotFoundException ex)
-                    {
-                        tbSummary3.Text = ex.Message;
-                    }
+
                 }
-                else
+                catch (ArgumentException ex)
                 {
-                    tbSummary3.Text += "Decrypt";
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (FormatException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (System.IO.FileNotFoundException ex)
+                {
+                    tbSummary3.Text = ex.Message;
                 }
             }
             else if (rA3.IsChecked == true)
