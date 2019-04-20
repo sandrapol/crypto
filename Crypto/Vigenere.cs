@@ -15,7 +15,6 @@ namespace Crypto
 
         public string Cipher(string input, string key, bool encipher)
         {
-            //check numbers in key
             for (int i = 0; i < key.Length; i++)
                 if (!char.IsLetter(key[i]))
                     return null;
