@@ -329,6 +329,7 @@ namespace Crypto
 
         List<int> sscBinary;
         List<int> lfsrBinary;
+        List<int> fileBinary;
 
         private void LetsDoThis3(object sender, RoutedEventArgs e)
         {
@@ -371,8 +372,9 @@ namespace Crypto
                 {
                     if (rM1.IsChecked == true)
                     {
-                        ssc.Encrypt(ref lfsrBinary, ref sscBinary);
-                        tbSummary3.Text += "Check new file";
+                        ssc.Encrypt(ref lfsrBinary, ref sscBinary, ref fileBinary);
+
+                        tbSummary3.Text += "LFSR binary:\n" + ssc.ToString(lfsrBinary) + "\nFile binary:\n" + ssc.ToString(fileBinary) + "\nSSC binary:\n" + ssc.ToString(sscBinary);
                     }
                     else
                     {
