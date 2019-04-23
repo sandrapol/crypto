@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,24 +11,21 @@ namespace Crypto
     class Stream3
     {
         private List<int> polynomial = new List<int>();
-        private List<int> seedList= new List<int>();
+        private List<int> seedList = new List<int>();
         private String source;
         private String target;
+        private String keyFile;
         private List<int> input = new List<int>();
 
-        Stream3(String key,String seed, String source, String target)
+        public Stream3(String key, String seed, String source)
         {
-            System.out.println("Podaj potegi wielomianu (wpisz end aby zakonczyc) np. 2 3 4 = x^2+x^3+x^4");
             keyToList(key);
-            int ile = polynomial.get(polynomial.size() - 1);
-            System.out.println("Podaj " + ile + " wartosci 0 lub 1:");
+            int ile = polynomial[polynomial.Count - 1];
             seedToList(seed);
-            System.out.println("podaj co odczytac");
             this.source = source;
-
-            readFromFile(input, source);
-            System.out.println("podaj gdzie zapisac");
-            target = this.target;
+            readFromFile();
+            target = source.Replace(".txt", "2.txt");
+            keyFile = source.Replace(".txt", "Key.txt");
         }
 
         private void keyToList(String key)
@@ -51,165 +49,150 @@ namespace Crypto
             {
                 if (!Int32.TryParse(charArr[i].ToString(), out control))
                     throw new System.ArgumentException("Values needs to be xxxx (x-numbers)", "Values");
-                if (Int32.Parse(charArr[i].ToString()) != 0 || Int32.Parse(charArr[i].ToString()) != 1)
+                if (Int32.Parse(charArr[i].ToString()) != 0 && Int32.Parse(charArr[i].ToString()) != 1)
                     throw new System.ArgumentException("Values needs to be 1 or 0", "Values");
                 this.seedList.Add(Int32.Parse(charArr[i].ToString()));
             }
         }
 
-        public void Code()
+        public List<int> Code()
         {
-            List<int> wynik = new List<int>();
+            List<int> codedBits = new List<int>();
             for (int i = 0; i < input.Count; i++)
             {
-                int co = input[i];
-                wynik.Add(rejestr(co));
+                codedBits.Add(getCodedBit(input[i]));
             }
 
-            List<String> litery = new List<String>();
-            String a = "";
+            List<String> byteList = new List<String>();
+            String currentByte = "";
 
-
-            for (int i = 0; i < wynik.Count; i++)
+            for (int i = 0; i < codedBits.Count; i++)
             {
                 if (i % 8 != 0 || i == 0)
                 {
 
-                    a += wynik[i].ToString();
+                    currentByte += codedBits[i].ToString();
                 }
                 else
                 {
-                    litery.Add(a);
-                    a = "";
-                    a += wynik[i].ToString();
+                    byteList.Add(currentByte);
+                    currentByte = "";
+                    currentByte += codedBits[i].ToString();
                 }
-                if (i == wynik.Count - 1)
+                if (i == codedBits.Count - 1)
                 {
-                    litery.Add(a);
+                    byteList.Add(currentByte);
                 }
             }
-            List<int> numbers = new List<int>();
-            for (int i = 0; i < litery.Count; i++)
+
+            List<int> result = new List<int>();
+            for (int i = 0; i < byteList.Count; i++)
             {
-                int number = Int32.Parse(litery[i]);
-                //     System.out.println(number);
-                numbers.Add(number);
+                result.Add(Convert.ToInt32(byteList[i], 2));
             }
-            writeToFile(numbers, target);
+            writeToFile(result, target);
+            writeKeyToFile();
+            return seedList;
         }
-        public void Decode()
+        public  string getDestination()
+        {
+            return "Zakodowany tekst znajduje się w " + target;
+        }
+
+        public string Decode()
         {
 
-            List<int> wynik = new List<int>();
+            List<int> codedBits = new List<int>();
             for (int i = 0; i < input.Count; i++)
             {
-                int co = input[i];
-                wynik.Add(rejestr2(co));
+                codedBits.Add(getDecodedBit(input[i]));
             }
 
-            List<String> litery = new List<String>();
-            String a = "";
+            List<String> byteList = new List<String>();
+            String currentByte = "";
 
-            for (int i = 0; i < wynik.Count; i++)
+            for (int i = 0; i < codedBits.Count; i++)
             {
                 if (i % 8 != 0 || i == 0)
                 {
-                    a += wynik[i].ToString();
+                    currentByte += codedBits[i].ToString();
                 }
                 else
                 {
-                    litery.Add(a);
-                    a = "";
-                    a += wynik[i].ToString();
+                    byteList.Add(currentByte);
+                    //currentByte = "";
+                    currentByte = codedBits[i].ToString();
                 }
-                if (i == wynik.Count - 1)
+                if (i == codedBits.Count - 1)
                 {
-                    litery.Add(a);
+                    byteList.Add(currentByte);
                 }
             }
-            List<int> numbers = new List<int>();
-            for (int i = 0; i < litery.Count; i++)
+
+            List<int> result = new List<int>();
+            for (int i = 0; i < byteList.Count; i++)
             {
-                int number = Int32.Parse(litery[i]);
-                numbers.Add(number);
+                result.Add(Convert.ToInt32(byteList[i], 2));
             }
-            writeToFile(numbers, target);
+            writeToFile(result, target);
+            return "Odkodowany tekst znajduje się w pliku " + target;
         }
 
-        public int rejestr2(int co)
+        public int getDecodedBit(int co)
         {
             int randomize = 1;
             int xor = 0;
-            int t = 0;
+            int decryptedBit = 0;
             for (int i = 0; i < randomize; i++)
             {
-                List<int> temp = new List<int>();
+                List<int> bitToXor = new List<int>();
                 for (int j = 0; j < polynomial.Count; j++)
                 {
-                    temp.Add(seedList[polynomial[j - 1]]);
+                    bitToXor.Add(seedList[polynomial[j] - 1]);
                 }
 
-                xor = xorM(temp);
+                xor = doXOR(bitToXor);
                 if (xor == co)
                 {
-                    t = 0;
+                    decryptedBit = 0;
                 }
                 else
                 {
-                    t = 1;
+                    decryptedBit = 1;
                 }
-                seedList = przesun(seedList, co);
-                int number = to10(seedList);
-
-
+                seedList = moveRight(seedList, co);
             }
-            return t;
+            return decryptedBit;
         }
 
-        public int rejestr(int co)
+        public int getCodedBit(int currentBit)
         {
             int randomize = 1;
             int xor = 0;
-            int t = 0;
+            int encryptedBit = 0;
             for (int i = 0; i < randomize; i++)
             {
-                List<int> temp = new List<int>();
+                List<int> bitesToXor = new List<int>();
                 for (int j = 0; j < polynomial.Count; j++)
                 {
-                    temp.Add(seedList[polynomial[j - 1]]);
+                    bitesToXor.Add(seedList[polynomial[j] - 1]);
                 }
 
-                xor = xorM(temp);
-                if (xor == co)
+                xor = doXOR(bitesToXor);
+                if (xor == currentBit)
                 {
-                    t = 0;
+                    encryptedBit = 0;
                 }
                 else
                 {
-                    t = 1;
+                    encryptedBit = 1;
                 }
-                seedList = przesun(seedList, t);
-                int number = to10(seedList);
-
-
+                seedList = moveRight(seedList, encryptedBit);
             }
-            return t;
+            return encryptedBit;
         }
 
-        public static int to10(List<int> list)
-        {
-            int number = 0;
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i] == 1)
-                {
-                    number += Convert.ToInt32(Math.Pow(2, i));
-                }
-            }
-            return number;
-        }
-
-        public static int xorM(List<int> list)
+        public static int doXOR(List<int> list)
         {
             int xor = list[list.Count - 1];
             for (int i = list.Count - 2; i >= 0; i--)
@@ -226,7 +209,7 @@ namespace Crypto
             return xor;
         }
 
-        public List<int> przesun(List<int> list, int xor)
+        public List<int> moveRight(List<int> list, int xor)
         {
             List<int> temp = new List<int>();
             temp.Add(xor);
@@ -236,58 +219,77 @@ namespace Crypto
             }
             return temp;
         }
-        public List<int> readFromFile(List<int> toxor, String nazwa)
+
+        public void readFromFile()
         {
-            StreamReader fileInput = new StreamReader(nazwa);
-            int currentByte;
+            FileStream fileInput = new FileStream(source, FileMode.Open, FileAccess.Read);
+            byte[] inputBytes = new byte[fileInput.Length];
             List<int> byteList = new List<int>();
-            do
+
+            fileInput.Read(inputBytes, 0, (int)fileInput.Length);
+
+            foreach (var elem in inputBytes)
             {
-                currentByte = fileInput.Read();
-                byteList.Add(currentByte);
-            } while (currentByte != -1);
+                byteList.Add(elem);
+            }
             byteList.Remove(byteList.Count - 1);
             for (int i = 0; i < byteList.Count; i++)
             {
-                String a = Convert.ToString(byteList[i],2);
-                if (a.Length < 8)
+                String currentByte = Convert.ToString(byteList[i], 2);
+                if (currentByte.Length < 8)
                 {
-                    String b = "";
-                    for (int j = 0; j < 8 - a.Length; j++)
+                    String helper = "";
+                    for (int j = 0; j < 8 - currentByte.Length; j++)
                     {
-                        b += "0";
+                        helper += "0";
                     }
-                    b += a;
-                    a = b;
+                    helper += currentByte;
+                    currentByte = helper;
                 }
-                char[] litera = a.ToCharArray();
+                char[] currentByteArr = currentByte.ToCharArray();
                 for (int j = 0; j < 8; j++)
                 {
-                    if (litera[j] == '0')
+                    if (currentByteArr[j] == '0')
                     {
-                        toxor.Add(0);
+                        input.Add(0);
                     }
                     else
                     {
-                        toxor.Add(1);
+                        input.Add(1);
                     }
                 }
             }
             fileInput.Close();
-            return toxor;
         }
-        public void writeToFile(List<int> wynik, String nazwa)
+        public void writeToFile(List<int> result, String fileName)
         {
-            StreamWriter fileOutput = new StreamWriter(nazwa);
-            int i = wynik.Count;
-            int tmp = wynik.Count;
-            byte[] dane_zaszyfrowane = new byte[tmp];
+            FileStream fileOutput = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
+            int i = result.Count;
+            int tmp = result.Count;
+            byte[] byteResult = new byte[tmp];
             for (int j = 0; j < tmp; j++)
             {
 
-                dane_zaszyfrowane[j] = (byte)(int)wynik[j];
+                byteResult[j] = (byte)result[j];
+
             }
-            fileOutput.Write(dane_zaszyfrowane);
+            fileOutput.Write(byteResult, 0, byteResult.Length);
+            fileOutput.Close();
+        }
+
+        public void writeKeyToFile()
+        {
+            FileStream fileOutput = new FileStream(keyFile, FileMode.OpenOrCreate, FileAccess.Write);
+            int i = seedList.Count;
+            int tmp = seedList.Count;
+            byte[] output = new byte[tmp];
+            for (int j = 0; j < tmp; j++)
+            {
+
+                output[j] = (byte)seedList[j];
+
+            }
+            fileOutput.Write(output, 0, seedList.Count);
             fileOutput.Close();
         }
     }
