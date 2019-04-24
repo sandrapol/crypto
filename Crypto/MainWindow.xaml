@@ -104,6 +104,55 @@
                     <TextBox Name="tbSummary2" Height="90" Margin="3" Padding="4" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>
                 </StackPanel>
             </TabItem>
+            <TabItem Header="STREAM">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Name="lInput" Margin="3 8 3 3" Padding="4">Polynomial's degrees:</Label>
+                        <Label Name="lKey3" Grid.Row="1" Margin="3" Padding="4">LFSR lenght:</Label>
+                        <Label Name="lFile" Grid.Row="2" Margin="3" Padding="4" IsEnabled="False">File:</Label>
+                        <TextBox Name="tbInput" Grid.Column="1" Margin="3 8 3 3" Padding="4"/>
+                        <TextBox Name="tbKey3" Grid.Row="1" Grid.Column="1" Margin="3" Padding="4"/>
+                        <TextBox Name="tbFile" Grid.Row="2" Grid.Column="1" Margin="3" Padding="4" IsEnabled="False"/>
+                        <Button Name="bInput" Grid.Column="2" Margin="3 8 3 3" Padding="8 4" Click="Clear1a">Clear</Button>
+                        <Button Name="bKey3" Grid.Row="1" Grid.Column="2" Margin="3" Padding="8 4" Click="Clear2a">Clear</Button>
+                        <Button Name="bFile" Grid.Row="2" Grid.Column="2" Margin="3" Padding="8 4" Click="LoadFile" IsEnabled="False">Load file</Button>
+                    </Grid>
+
+                    <DockPanel>
+                        <GroupBox Header="Algorithm" Padding="2" Margin="2 5">
+                            <StackPanel ButtonBase.Click="Method_Click3">
+                                <RadioButton Name="rA1" Margin="3 4" IsChecked="True">Linear Feedback Shift Register</RadioButton>
+                                <RadioButton Name="rA2" Margin="3 4">Synchronous Stream Cipher</RadioButton>
+                                <RadioButton Name="rA3" Margin="3 4">Ciphertext Autokey</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox Header="Method" Padding="2" Margin="2 5" HorizontalAlignment="Left">
+                            <StackPanel>
+                                <RadioButton Name="rM1" Margin="3 4" IsChecked="True">Encryption</RadioButton>
+                                <RadioButton Name="rM2" Margin="3 4" IsEnabled="False">Decryption</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Button Margin="3" Padding="8 4" Click="LetsDoThis3">OGIEŃ!</Button>
+                        </WrapPanel>
+                    </DockPanel>
+                    <TextBox Name="tbSummary3" Height="90" Margin="3" Padding="4" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>
+                </StackPanel>
+
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

@@ -218,6 +218,25 @@ namespace Crypto
             }
             else if (rb2A2.IsChecked == true)
             {
+                JuliuszCezar juliusz = new JuliuszCezar();
+                if (rb2M1.IsChecked == true)
+                {
+                    string plainText = tbPlainText2.Text;
+                    int key = int.Parse(tbKey2.Text);
+
+                    string cipherText = juliusz.Encipher(plainText,key);
+
+                    tbSummary2.Text += cipherText;
+                }
+                else
+                {
+                    string cipherText = tbCipherText2.Text;
+                    int key = int.Parse(tbKey2.Text);
+
+                    string plainText = juliusz.Decipher(cipherText,key);
+
+                    tbSummary2.Text += plainText;
+                }
 
             }
             else if (rb2A3.IsChecked == true)
@@ -244,5 +263,210 @@ namespace Crypto
                 }
             }
         }
+
+        ////////// -- Stream -- //////////
+        ////////// --- tab3 --- //////////
+
+        private void Clear1a(object sender, RoutedEventArgs e)
+        {
+            tbInput.Text = "";
+            tbInput.Focus();
+        }
+
+        private void Clear2a(object sender, RoutedEventArgs e)
+        {
+            tbKey3.Text = "";
+            tbKey3.Focus();
+        }
+
+        private void Clear3a(object sender, RoutedEventArgs e)
+        {
+            tbFile.Text = "";
+            tbFile.Focus();
+        }
+
+        private void Method_Click3(object sender, RoutedEventArgs e)
+        {
+            if (rA1.IsChecked == true)
+            {
+                lKey3.IsEnabled = true;
+                tbKey3.IsEnabled = true;
+                bKey3.IsEnabled = true;
+
+                lFile.IsEnabled = false;
+                tbFile.IsEnabled = false;
+                bFile.IsEnabled = false;
+
+                rM2.IsEnabled = false;
+            }
+            else
+            {
+                lKey3.IsEnabled = false;
+                tbKey3.IsEnabled = false;
+                bKey3.IsEnabled = false;
+<<<<<<< HEAD
+=======
+                if (rA3.IsChecked==true)
+                {
+                    lKey3.IsEnabled = true;
+                    tbKey3.IsEnabled = true;
+                    bKey3.IsEnabled = true;
+                }
+>>>>>>> 0d4e03e... Próba
+
+                lFile.IsEnabled = true;
+                tbFile.IsEnabled = true;
+                bFile.IsEnabled = true;
+
+                rM2.IsEnabled = true;
+            }
+        }
+
+        private void LoadFile(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+
+            Nullable<bool> result = openFileDlg.ShowDialog();
+
+            if (result == true)
+            {
+                tbFile.Text = openFileDlg.FileName;
+                tbSummary3.Text = "Plik wczytano prawidłowo.";
+            }
+        }
+
+
+        List<int> sscBinary;
+        List<int> lfsrBinary;
+        List<int> fileBinary;
+
+        private void LetsDoThis3(object sender, RoutedEventArgs e)
+        {
+            tbSummary3.Text = "Result\n--\n";
+
+            if (rA1.IsChecked == true)
+            {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0d4e03e... Próba
+                try
+                {
+                    LFSR lfsr = new LFSR();
+
+                    if (rM1.IsChecked == true)
+                    {
+                        string iteretations = "", output = "";
+                        string LFSRdegree = tbInput.Text;
+<<<<<<< HEAD
+
+                        if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
+                        {
+                            iteretations = "\n--\n";
+                            output = lfsr.Encrypt(LFSRdegree, lfsrLength, ref iteretations);
+                        }
+
+                        tbSummary3.Text += output + iteretations;
+                    }
+                }
+                catch(FormatException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch(ArgumentOutOfRangeException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+=======
+
+                        if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
+                        {
+                            iteretations = "\n--\n";
+                            output = lfsr.Encrypt(LFSRdegree, lfsrLength, ref iteretations);
+                        }
+
+                        tbSummary3.Text += output + iteretations;
+                    }
+
+                }
+                catch(FormatException ex) { 
+
+                    tbSummary3.Text = ex.Message;
+                }
+                catch(ArgumentOutOfRangeException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+
+>>>>>>> 0d4e03e... Próba
+                }
+            }
+            else if (rA2.IsChecked == true)
+            {
+                SynchronousStreamCipher ssc = new SynchronousStreamCipher(tbInput.Text, tbFile.Text);
+<<<<<<< HEAD
+
+                try
+                {
+                    if (rM1.IsChecked == true)
+                    {
+                        ssc.Encrypt(ref lfsrBinary, ref sscBinary, ref fileBinary);
+
+=======
+
+                try
+                {
+                    if (rM1.IsChecked == true)
+                    {
+                        ssc.Encrypt(ref lfsrBinary, ref sscBinary, ref fileBinary);
+
+>>>>>>> 0d4e03e... Próba
+                        tbSummary3.Text += "LFSR binary:\n" + ssc.ToString(lfsrBinary) + "\nFile binary:\n" + ssc.ToString(fileBinary) + "\nSSC binary:\n" + ssc.ToString(sscBinary);
+                    }
+                    else
+                    {
+                        tbSummary3.Text += ssc.Decrypt(ref lfsrBinary, ref sscBinary);
+                    }
+
+                }
+<<<<<<< HEAD
+                catch (ArgumentException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (FormatException ex)
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+                catch (System.IO.FileNotFoundException ex)
+=======
+                catch (Exception ex)
+>>>>>>> 0d4e03e... Próba
+                {
+                    tbSummary3.Text = ex.Message;
+                }
+            }
+            else if (rA3.IsChecked == true)
+            {
+
+                if (rM1.IsChecked == true)
+                {
+                     Stream3 stream = new Stream3( tbInput.Text, tbKey3.Text, tbFile.Text);
+                    List<int>sth=stream.Code();
+                    tbSummary3.Text = "Klucz do odkodowania: \n";
+                    foreach (var it in sth)
+                        tbSummary3.Text += it;
+                    tbSummary3.Text += "\n"+stream.getDestination();
+                }
+                else
+                {
+                    Stream3 stream = new Stream3( tbInput.Text, tbKey3.Text, tbFile.Text);
+                    tbSummary3.Text=stream.Decode();
+                }
+            }
+        }
+
     }
 }
