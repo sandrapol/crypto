@@ -126,7 +126,7 @@ namespace Crypto
                         cipher.decode();
                         tbSummary.Text += cipher.getDecodeResult();
                     }
-                    
+
                 }
                 catch (ArgumentException ex)
                 {
@@ -224,7 +224,7 @@ namespace Crypto
                     string plainText = tbPlainText2.Text;
                     int key = int.Parse(tbKey2.Text);
 
-                    string cipherText = juliusz.Encipher(plainText,key);
+                    string cipherText = juliusz.Encipher(plainText, key);
 
                     tbSummary2.Text += cipherText;
                 }
@@ -233,7 +233,7 @@ namespace Crypto
                     string cipherText = tbCipherText2.Text;
                     int key = int.Parse(tbKey2.Text);
 
-                    string plainText = juliusz.Decipher(cipherText,key);
+                    string plainText = juliusz.Decipher(cipherText, key);
 
                     tbSummary2.Text += plainText;
                 }
@@ -304,15 +304,13 @@ namespace Crypto
                 lKey3.IsEnabled = false;
                 tbKey3.IsEnabled = false;
                 bKey3.IsEnabled = false;
-<<<<<<< HEAD
-=======
+
                 if (rA3.IsChecked==true)
                 {
                     lKey3.IsEnabled = true;
                     tbKey3.IsEnabled = true;
                     bKey3.IsEnabled = true;
                 }
->>>>>>> 0d4e03e... Próba
 
                 lFile.IsEnabled = true;
                 tbFile.IsEnabled = true;
@@ -346,10 +344,6 @@ namespace Crypto
 
             if (rA1.IsChecked == true)
             {
-<<<<<<< HEAD
-=======
-
->>>>>>> 0d4e03e... Próba
                 try
                 {
                     LFSR lfsr = new LFSR();
@@ -358,7 +352,6 @@ namespace Crypto
                     {
                         string iteretations = "", output = "";
                         string LFSRdegree = tbInput.Text;
-<<<<<<< HEAD
 
                         if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
                         {
@@ -369,40 +362,18 @@ namespace Crypto
                         tbSummary3.Text += output + iteretations;
                     }
                 }
-                catch(FormatException ex)
+                catch (FormatException ex)
                 {
                     tbSummary3.Text = ex.Message;
                 }
-                catch(ArgumentOutOfRangeException ex)
+                catch (ArgumentOutOfRangeException ex)
                 {
                     tbSummary3.Text = ex.Message;
-=======
-
-                        if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
-                        {
-                            iteretations = "\n--\n";
-                            output = lfsr.Encrypt(LFSRdegree, lfsrLength, ref iteretations);
-                        }
-
-                        tbSummary3.Text += output + iteretations;
-                    }
-
-                }
-                catch(FormatException ex) { 
-
-                    tbSummary3.Text = ex.Message;
-                }
-                catch(ArgumentOutOfRangeException ex)
-                {
-                    tbSummary3.Text = ex.Message;
-
->>>>>>> 0d4e03e... Próba
                 }
             }
             else if (rA2.IsChecked == true)
             {
                 SynchronousStreamCipher ssc = new SynchronousStreamCipher(tbInput.Text, tbFile.Text);
-<<<<<<< HEAD
 
                 try
                 {
@@ -410,15 +381,6 @@ namespace Crypto
                     {
                         ssc.Encrypt(ref lfsrBinary, ref sscBinary, ref fileBinary);
 
-=======
-
-                try
-                {
-                    if (rM1.IsChecked == true)
-                    {
-                        ssc.Encrypt(ref lfsrBinary, ref sscBinary, ref fileBinary);
-
->>>>>>> 0d4e03e... Próba
                         tbSummary3.Text += "LFSR binary:\n" + ssc.ToString(lfsrBinary) + "\nFile binary:\n" + ssc.ToString(fileBinary) + "\nSSC binary:\n" + ssc.ToString(sscBinary);
                     }
                     else
@@ -427,7 +389,6 @@ namespace Crypto
                     }
 
                 }
-<<<<<<< HEAD
                 catch (ArgumentException ex)
                 {
                     tbSummary3.Text = ex.Message;
@@ -441,9 +402,6 @@ namespace Crypto
                     tbSummary3.Text = ex.Message;
                 }
                 catch (System.IO.FileNotFoundException ex)
-=======
-                catch (Exception ex)
->>>>>>> 0d4e03e... Próba
                 {
                     tbSummary3.Text = ex.Message;
                 }
@@ -453,20 +411,88 @@ namespace Crypto
 
                 if (rM1.IsChecked == true)
                 {
-                     Stream3 stream = new Stream3( tbInput.Text, tbKey3.Text, tbFile.Text);
-                    List<int>sth=stream.Code();
+                    Stream3 stream = new Stream3(tbInput.Text, tbKey3.Text, tbFile.Text);
+                    List<int> sth = stream.Code();
                     tbSummary3.Text = "Klucz do odkodowania: \n";
                     foreach (var it in sth)
                         tbSummary3.Text += it;
-                    tbSummary3.Text += "\n"+stream.getDestination();
+                    tbSummary3.Text += "\n" + stream.getDestination();
                 }
                 else
                 {
-                    Stream3 stream = new Stream3( tbInput.Text, tbKey3.Text, tbFile.Text);
-                    tbSummary3.Text=stream.Decode();
+                    Stream3 stream = new Stream3(tbInput.Text, tbKey3.Text, tbFile.Text);
+                    tbSummary3.Text = stream.Decode();
                 }
             }
         }
 
+        ////////// --- DES  --- //////////
+        ////////// --- tab4 --- //////////
+
+        private void ClearDES1(object sender, RoutedEventArgs e)
+        {
+            tbPlainTextDES.Text = "";
+            tbPlainTextDES.Focus();
+        }
+
+        private void ClearDES2(object sender, RoutedEventArgs e)
+        {
+            tbKeyDES.Text = "";
+            tbKeyDES.Focus();
+        }
+
+        private void ClearDES3(object sender, RoutedEventArgs e)
+        {
+            tbCipherTextDES.Text = "";
+            tbCipherTextDES.Focus();
+        }
+
+        private void Method_Click4(object sender, RoutedEventArgs e)
+        {
+            if (rb1.IsChecked == true)
+            {
+                lCipherTextDES.IsEnabled = false;
+                tbCipherTextDES.IsEnabled = false;
+                bCipherTextDES.IsEnabled = false;
+                lPlainTextDES.IsEnabled = true;
+                tbPlainTextDES.IsEnabled = true;
+                bPlainTextDES.IsEnabled = true;
+            }
+            else if (rb2.IsChecked == true)
+            {
+                lCipherTextDES.IsEnabled = true;
+                tbCipherTextDES.IsEnabled = true;
+                bCipherTextDES.IsEnabled = true;
+                lPlainTextDES.IsEnabled = false;
+                tbPlainTextDES.IsEnabled = false;
+                bPlainTextDES.IsEnabled = false;
+            }
+        }
+
+        private void DES(object sender, RoutedEventArgs e)
+        {
+            tbSummaryDES.Text = "Result\n--\n";
+
+            DESpacito des = new DESpacito();
+
+            if (rb1.IsChecked == true)
+            {
+                string plainText = tbPlainTextDES.Text;
+                string key = tbKeyDES.Text;
+
+                string cipherText = des.Encrypt(plainText, key);
+
+                tbSummaryDES.Text += cipherText; 
+            }
+            else
+            {
+                string cipherText = tbCipherTextDES.Text;
+                string key = tbKeyDES.Text;
+
+                string plainText = des.Decrypt(cipherText, key);
+
+                tbSummaryDES.Text += plainText;
+            }
+        }
     }
 }
