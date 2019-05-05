@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BitArray.cs" />
+    <Compile Include="DESpacito.cs" />
     <Compile Include="SynchronousStreamCipher.cs" />
     <Compile Include="ColumnTransposition2.cs" />
     <Compile Include="JuliuszCezar.cs" />

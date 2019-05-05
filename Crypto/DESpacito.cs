@@ -9,9 +9,6 @@ namespace Crypto
 {
     class DESpacito
     {
-        public new string AlgorithmName = "De spa cito";
-
-
         //Initital Permutation Table
         private int[] ip = new int[] {58,50,42,34,26,18,10,2,60,52,44,36,28,20,12,4,
                                        62,54,46,38,30,22,14,6,64,56,48,40,32,24,16,8,
@@ -428,7 +425,7 @@ namespace Crypto
             return finaltext;
         }
 
-        public override string Encrypt(string plaintext, string key)
+        public string Encrypt(string plaintext, string key)
         {
             string cyphertext = null;
 
@@ -504,7 +501,7 @@ namespace Crypto
 
                 DivideIntoCKeyAndDKey();
 
-                for (int j = 0; j < n, j++)
+                for (int j = 0; j < n; j++)
                 {
                     CircularRightShift(CKey);
                     CircularRightShift(DKey);
@@ -529,7 +526,7 @@ namespace Crypto
             FinalPermutation(attachedct, fpct);
         }
 
-        public override string Decrypt(string ciphertext, string key)
+        public string Decrypt(string ciphertext, string key)
         {
             string plaintext = null;
 

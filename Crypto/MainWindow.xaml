@@ -153,6 +153,46 @@
                 </StackPanel>
 
             </TabItem>
+            <TabItem Header="DES">
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Name="lPlainTextDES" Margin="3 8 3 3" Padding="4">Plain text:</Label>
+                        <Label Grid.Row="1" Margin="3" Padding="4">Key:</Label>
+                        <Label Name="lCipherTextDES" Grid.Row="2" Margin="3" Padding="4" IsEnabled="False">Cipher text:</Label>
+                        <TextBox Name="tbPlainTextDES" Grid.Column="1" Margin="3 8 3 3" Padding="4"/>
+                        <TextBox Name="tbKeyDES" Grid.Row="1" Grid.Column="1" Margin="3" Padding="4"/>
+                        <TextBox Name="tbCipherTextDES" Grid.Row="2" Grid.Column="1" Margin="3" Padding="4" IsEnabled="False"/>
+                        <Button Name="bPlainTextDES" Grid.Column="2" Margin="3 8 3 3" Padding="8 4" Click="ClearDES1">Clear</Button>
+                        <Button Grid.Row="1" Grid.Column="2" Margin="3" Padding="8 4" Click="ClearDES2">Clear</Button>
+                        <Button Name="bCipherTextDES" Grid.Row="2" Grid.Column="2" Margin="3" Padding="8 4" Click="ClearDES3" IsEnabled="False">Clear</Button>
+                    </Grid>
+
+                    <DockPanel>
+                        <GroupBox Header="Method" Padding="2" Margin="2 5" HorizontalAlignment="Left">
+                            <StackPanel ButtonBase.Click="Method_Click4">
+                                <RadioButton Name="rb1" Margin="3 4" IsChecked="True">Encryption</RadioButton>
+                                <RadioButton Name="rb2" Margin="3 4">Decryption</RadioButton>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <WrapPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Button Margin="3" Padding="8 4" Click="DES">OGIEŃ!</Button>
+                        </WrapPanel>
+                    </DockPanel>
+                    <TextBox Name="tbSummaryDES" Height="130" Margin="3" Padding="4" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" IsReadOnly="True"/>
+                </StackPanel>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>
