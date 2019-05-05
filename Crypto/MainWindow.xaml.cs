@@ -304,15 +304,14 @@ namespace Crypto
                 lKey3.IsEnabled = false;
                 tbKey3.IsEnabled = false;
                 bKey3.IsEnabled = false;
-<<<<<<< HEAD
-=======
+
                 if (rA3.IsChecked==true)
                 {
                     lKey3.IsEnabled = true;
                     tbKey3.IsEnabled = true;
                     bKey3.IsEnabled = true;
                 }
->>>>>>> 0d4e03e... Próba
+
 
                 lFile.IsEnabled = true;
                 tbFile.IsEnabled = true;
@@ -346,10 +345,6 @@ namespace Crypto
 
             if (rA1.IsChecked == true)
             {
-<<<<<<< HEAD
-=======
-
->>>>>>> 0d4e03e... Próba
                 try
                 {
                     LFSR lfsr = new LFSR();
@@ -358,7 +353,6 @@ namespace Crypto
                     {
                         string iteretations = "", output = "";
                         string LFSRdegree = tbInput.Text;
-<<<<<<< HEAD
 
                         if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
                         {
@@ -376,49 +370,18 @@ namespace Crypto
                 catch(ArgumentOutOfRangeException ex)
                 {
                     tbSummary3.Text = ex.Message;
-=======
 
-                        if (!string.IsNullOrEmpty(LFSRdegree) && int.TryParse(tbKey3.Text, out int lfsrLength))
-                        {
-                            iteretations = "\n--\n";
-                            output = lfsr.Encrypt(LFSRdegree, lfsrLength, ref iteretations);
-                        }
-
-                        tbSummary3.Text += output + iteretations;
-                    }
-
-                }
-                catch(FormatException ex) { 
-
-                    tbSummary3.Text = ex.Message;
-                }
-                catch(ArgumentOutOfRangeException ex)
-                {
-                    tbSummary3.Text = ex.Message;
-
->>>>>>> 0d4e03e... Próba
                 }
             }
             else if (rA2.IsChecked == true)
             {
                 SynchronousStreamCipher ssc = new SynchronousStreamCipher(tbInput.Text, tbFile.Text);
-<<<<<<< HEAD
 
                 try
                 {
                     if (rM1.IsChecked == true)
                     {
                         ssc.Encrypt(ref lfsrBinary, ref sscBinary, ref fileBinary);
-
-=======
-
-                try
-                {
-                    if (rM1.IsChecked == true)
-                    {
-                        ssc.Encrypt(ref lfsrBinary, ref sscBinary, ref fileBinary);
-
->>>>>>> 0d4e03e... Próba
                         tbSummary3.Text += "LFSR binary:\n" + ssc.ToString(lfsrBinary) + "\nFile binary:\n" + ssc.ToString(fileBinary) + "\nSSC binary:\n" + ssc.ToString(sscBinary);
                     }
                     else
@@ -427,7 +390,6 @@ namespace Crypto
                     }
 
                 }
-<<<<<<< HEAD
                 catch (ArgumentException ex)
                 {
                     tbSummary3.Text = ex.Message;
@@ -441,9 +403,6 @@ namespace Crypto
                     tbSummary3.Text = ex.Message;
                 }
                 catch (System.IO.FileNotFoundException ex)
-=======
-                catch (Exception ex)
->>>>>>> 0d4e03e... Próba
                 {
                     tbSummary3.Text = ex.Message;
                 }

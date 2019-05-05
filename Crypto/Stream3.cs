@@ -20,7 +20,6 @@ namespace Crypto
         public Stream3(String key, String seed, String source)
         {
             keyToList(key);
-            int ile = polynomial[polynomial.Count - 1];
             seedToList(seed);
             this.source = source;
             readFromFile();
@@ -222,7 +221,8 @@ namespace Crypto
 
         public void readFromFile()
         {
-            FileStream fileInput = new FileStream(source, FileMode.Open, FileAccess.Read);
+            FileStream fileInput =
+                new FileStream(source, FileMode.Open, FileAccess.Read);
             byte[] inputBytes = new byte[fileInput.Length];
             List<int> byteList = new List<int>();
 
@@ -232,7 +232,7 @@ namespace Crypto
             {
                 byteList.Add(elem);
             }
-            byteList.Remove(byteList.Count - 1);
+           
             for (int i = 0; i < byteList.Count; i++)
             {
                 String currentByte = Convert.ToString(byteList[i], 2);
@@ -263,7 +263,8 @@ namespace Crypto
         }
         public void writeToFile(List<int> result, String fileName)
         {
-            FileStream fileOutput = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
+            FileStream fileOutput = 
+                new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write);
             int i = result.Count;
             int tmp = result.Count;
             byte[] byteResult = new byte[tmp];
