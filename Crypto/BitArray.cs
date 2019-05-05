@@ -10,6 +10,7 @@ namespace Crypto
     {
         public static int[] ToBits(int decimalnumber, int numberofbits)
         {
+
             int[] bitarray = new int[numberofbits];
             int k = numberofbits - 1;
             char[] bd = Convert.ToString(decimalnumber, 2).ToCharArray();
